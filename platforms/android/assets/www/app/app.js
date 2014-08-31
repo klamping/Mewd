@@ -21,14 +21,16 @@ angular.module('moodTracker', ['ionic', 'firebase'])
 })
 .controller("RecordCtrl", function($scope, $firebase, moodRecord, $ionicPopup) {
   $scope.setMood = function (mood) {
+    var name = mood.name;
     $ionicPopup.confirm({
-      title: 'Feeling ' + mood + '?',
+      title: 'Feeling ' + name + '?',
       okText: 'Yep',
       cancelText: 'Nope'
     }).then(function (hasConfirmed) {
       if (hasConfirmed) {
+        console.log(name);
         moodRecord.$asArray().$add({
-          mood: mood,
+          mood: name,
           time: Date.now()
         });
       }

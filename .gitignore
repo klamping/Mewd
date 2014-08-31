@@ -3,7 +3,7 @@ node_modules/
 *.apk
 *.keystore
 *.sw*
-platforms/^.*
+platforms/
 
 
 
