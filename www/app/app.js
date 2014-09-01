@@ -12,15 +12,17 @@ angular.module('moodTracker', ['ionic', 'firebase'])
   });
 })
 .factory("moodRecord", function($firebase, $rootScope) {
+
+  console.log($rootScope.user.uid);
+   var ref = new Firebase("https://moodie.firebaseio.com/moodRecord/" + $rootScope.user.uid);
+
+   return $firebase(ref);
+})
+.factory("moods", function($firebase, $rootScope) {
    var ref = new Firebase("https://moodie.firebaseio.com/moods");
 
    return $firebase(ref);
 })
-// .factory("moods", function($firebase, $rootScope) {
-//    var ref = new Firebase("https://moodie.firebaseio.com/moods");
-
-//    return $firebase(ref);
-// })
 .controller("HistoryCtrl", function($scope, $firebase, moodRecord, $ionicPopup) {
-  $scope.moods = moodRecord.$asObject();
+  $scope.moods = moodRecord.$asArray();
 });
