@@ -21,47 +21,65 @@
     <!-- Firebase -->
     <script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
 
+    <!-- Firebase Simple Login -->
+    <script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
 
     <!-- your app's js -->
     <script src="app/app.js"></script>
+    <script src="app/login/login.js"></script>
+    <script src="app/record/record.js"></script>
   </head>
   <body ng-app="moodTracker" class="platform-android">
+    <ion-pane ng-hide="user">
+      <ion-header-bar class="bar-stable">
+        <h1 class="title">Login</h1>
+      </ion-header-bar>
+      <ion-content ng-controller="loginCtrl">
+        <!-- Buttons -->
+        <button class="button button-full button-positive" ng-click="login('facebook')">Login with Facebook</button>
+        <div class="card" ng-hide="user">
+          <div class="item item-text-wrap">User not logged in</div>
+        </div>
 
-      <ion-tabs class="tabs-positive tabs-icon-only">
+        <button class="button button-full button-outline button-assertive" ng-click="logout()">Logout</button>
+      </ion-content>
+    </ion-pane>
 
-        <ion-tab title="Record" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline" ng-controller="RecordCtrl">
+    <ion-tabs class="tabs-positive tabs-icon-only" ng-show="user">
+      <ion-tab title="Record" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline" ng-controller="RecordCtrl">
 
-          <ion-header-bar class="bar-positive">
-            <h1 class="title">Record Mood</h1>
-          </ion-header-bar>
-          <ion-content has-tabs="true">
-            <ul class="moods">
-              <li ng-repeat="mood in moods" class="mood inline padding-left padding-top">
-                <button ng-click="setMood(mood)" class="button" ng-class="{ 'button-balanced': mood.positive, 'button-dark': !mood.positive }">{{ mood.name }}</button>
-              </li>
-            </ul>
-          </ion-content>
-        </ion-tab>
+        <ion-header-bar class="bar-positive">
+          <h1 class="title">Record Mood</h1>
+        </ion-header-bar>
+        <ion-content has-tabs="true">
+          <ul class="moods">
+            <li ng-repeat="mood in moods" class="mood inline padding-left padding-top">
+              <button ng-click="setMood(mood)" class="button" ng-class="{ 'button-balanced': mood.positive, 'button-dark': !mood.positive }">{{ mood.name }}</button>
+            </li>
+          </ul>
+        </ion-content>
+      </ion-tab>
 
-        <ion-tab title="History" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline"  ng-controller="HistoryCtrl">>
-          <ion-header-bar class="bar-positive">
-            <h1 class="title">Mood History</h1>
-          </ion-header-bar>
-          <ion-content has-tabs="true">
-            <ion-list>
-              <ion-item ng-repeat="mood in moods">
-                {{ mood.mood }}
-                <span class="item-note">
-                   {{ mood.time | date:'short' }}
-                </span>
-              </ion-item>
-            </ion-list>
-          </ion-content>
-        </ion-tab>
+      <ion-tab title="History" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline"  ng-controller="HistoryCtrl">>
+        <ion-header-bar class="bar-positive">
+          <h1 class="title">Mood History</h1>
+        </ion-header-bar>
+        <ion-content has-tabs="true">
+          <ion-list>
+            <ion-item ng-repeat="mood in moods | orderBy:'time'">
+              {{ mood.mood }}
+              <span class="item-note">
+                 {{ mood.time | date:'short' }}
+              </span>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-tab>
 
-      </ion-tabs>
+    </ion-tabs>
 
   </body>
 </html>

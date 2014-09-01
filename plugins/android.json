@@ -15,6 +15,14 @@
                         {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Cookies\"><param name=\"android-package\" value=\"com.bez4pieci.cookies.Cookies\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -26,6 +34,12 @@
             "PACKAGE_NAME": "com.ionicframework.moodtracker113031"
         },
         "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.ionicframework.moodtracker113031"
+        },
+        "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.moodtracker113031"
+        },
+        "com.bez4pieci.cookies": {
             "PACKAGE_NAME": "com.ionicframework.moodtracker113031"
         }
     },

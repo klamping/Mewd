@@ -1,6 +1,5 @@
 node_modules/
-.DS_Store
-*.apk
+
 *.keystore
 *.sw*
 platforms/
@@ -20,9 +19,9 @@ platforms/
 *.class
 
 # generated files - android project subfolder
-Android/bin/
-Android/gen/
-Android/assets/
+bin/
+gen/
+assets/
 
 # generated files
 bin/
