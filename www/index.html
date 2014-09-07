@@ -8,10 +8,6 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-    <link href="css/ionic.app.css" rel="stylesheet">
-    -->
-
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
@@ -26,6 +22,9 @@
 
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
+
+    <!-- Bower -->
+    <script src="lib/lodash/dist/lodash.min.js"></script>
 
     <!-- your app's js -->
     <script src="app/app.js"></script>
@@ -60,9 +59,9 @@
         </ion-content>
       </ion-tab>
 
-      <ion-tab title="History" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline"  ng-controller="HistoryCtrl">>
+      <ion-tab title="Mood Log" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline"  ng-controller="MoodLogCtrl">
         <ion-header-bar class="bar-positive">
-          <h1 class="title">Mood History</h1>
+          <h1 class="title">Mood Log</h1>
         </ion-header-bar>
         <ion-content has-tabs="true">
           <ion-list>
@@ -73,6 +72,35 @@
               </span>
             </ion-item>
           </ion-list>
+        </ion-content>
+      </ion-tab>
+
+
+      <ion-tab title="Mood Pulse" icon-on="ion-arrow-graph-up-right" icon-off="ion-arrow-graph-up-right"  ng-controller="MoodPulseCtrl">
+        <ion-header-bar class="bar-positive">
+          <h1 class="title">Mood Pulse</h1>
+        </ion-header-bar>
+        <ion-content has-tabs="true">
+          <div class="card">
+            <div class="item item-text-wrap item-balanced">
+              Positive: {{ counts[1].length }}
+            </div>
+          </div>
+          <div class="card">
+            <div class="item item-text-wrap">
+              Neutral: {{ counts[0].length }}
+            </div>
+          </div>
+          <div class="card">
+            <div class="item item-text-wrap item-assertive">
+              Negative: {{ counts[-1].length }}
+            </div>
+          </div>
+          <div class="card">
+            <div class="item item-text-wrap item-royal">
+              Overall Score: {{ counts[1].length - counts[-1].length }}
+            </div>
+          </div>
         </ion-content>
       </ion-tab>
 
