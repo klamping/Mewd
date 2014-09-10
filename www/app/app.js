@@ -24,16 +24,22 @@ angular.module('moodTracker', ['ionic', 'firebase'])
 .controller("MoodLogCtrl", function($scope, $firebase, moodRecord, $ionicPopup) {
     $scope.moods = moodRecord.$asArray();
 })
-.controller("MoodPulseCtrl", function($scope, moods) {
-    $scope.moods = moods.$asObject();
+.controller("MoodPulseCtrl", function($scope, moods, moodRecord) {
+    var storedMoods = moods.$asArray();
+    var records = moodRecord.$asArray();
 
-    $scope.moods.$loaded().then(function() {
-        $scope.counts = _.groupBy($scope.moods, function (mood) {
-            if (_.isObject(mood) && 'positive' in mood) {
-                return mood.positive.toString();
-            } else {
-                return 'invalid';
-            }
+    $scope.counts = [0, 0, 0];
+
+    storedMoods.$loaded().then(function () {
+        records.$loaded().then(function () {
+            _.each(records, function (record) {
+                // find the associate mood
+                var mood = _.find(storedMoods, { 'name': record.mood });
+
+                if (_.isObject(mood)) {
+                    $scope.counts[mood.positive + 1]++;
+                }
+            })
         });
     });
 });

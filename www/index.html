@@ -83,22 +83,22 @@
         <ion-content has-tabs="true">
           <div class="card">
             <div class="item item-text-wrap item-balanced">
-              Positive: {{ counts[1].length }}
+              Positive: {{ counts[0] }}
             </div>
           </div>
           <div class="card">
             <div class="item item-text-wrap">
-              Neutral: {{ counts[0].length }}
+              Neutral: {{ counts[1] }}
             </div>
           </div>
           <div class="card">
             <div class="item item-text-wrap item-assertive">
-              Negative: {{ counts[-1].length }}
+              Negative: {{ counts[2] }}
             </div>
           </div>
           <div class="card">
             <div class="item item-text-wrap item-royal">
-              Overall Score: {{ counts[1].length - counts[-1].length }}
+              Overall Score: {{ counts[2] - counts[0] }}
             </div>
           </div>
         </ion-content>
