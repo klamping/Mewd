@@ -1,1 +1,11 @@
 /* Empty. Add your own CSS if you like */
+.mood-filter {
+    margin-top:10px;
+    margin-bottom:5px;
+}
+.mood-filter .filters .button {
+    margin-left: 5px;
+}
+.mood-filter .filters .button:first-child {
+    margin-left: 0;
+}

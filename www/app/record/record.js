@@ -17,4 +17,10 @@ angular.module('moodTracker')
   };
 
   $scope.moods = moods.$asArray();
+
+  $scope.moodFilter = {};
+
+  $scope.filterMood = function (positivity) {
+    $scope.moodFilter.positive = positivity;
+  };
 });
