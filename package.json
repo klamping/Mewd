@@ -1,7 +1,7 @@
 {
-  "name": "moodie",
+  "name": "Mewd",
   "version": "0.0.1",
-  "description": "An Ionic project",
+  "description": "A minimilistic app for tracking moods",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",

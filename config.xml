@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.moodtracker113031" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>moodie</name>
+<widget id="com.ionicframework.Mewd113031" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Mewd</name>
   <description>
-      App used to track moods throughout the day over time.
+      A minimilistic app for tracking moods
     </description>
   <author email="klamping@gmail.com" href="http://kevinlamping.com/">
       Kevin Lamping
