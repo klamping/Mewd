@@ -9,29 +9,31 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
         controller: 'LoginCtrl'
       })
       .state('tabs', {
+        abstract: true,
         url: '/',
-        templateUrl: '/app/app.html',
-        controller: 'TabsCtrl'
+        templateUrl: '/app/app.html'
       })
-      .state('tabs.record', {
-        url: '/record',
-        templateUrl: '/app/record/record.html',
-        controller: 'RecordCtrl'
-      })
-      .state('tabs.log', {
-        url: '/log',
-        templateUrl: '/app/log/log.html',
-        controller: 'MoodLogCtrl'
-      })
-      .state('tabs.pulse', {
-        url: '/pulse',
-        templateUrl: '/app/pulse/pulse.html',
-        controller: 'MoodPulseCtrl'
+      .state('tabs.views', {
+        url: '',
+        views: {
+            'record@tabs': {
+                templateUrl: '/app/record/record.html',
+                controller: 'RecordCtrl'
+            },
+            'log@tabs': {
+                templateUrl: '/app/log/log.html',
+                controller: 'MoodLogCtrl'
+            },
+            'pulse@tabs': {
+                templateUrl: '/app/pulse/pulse.html',
+                controller: 'MoodPulseCtrl'
+            }
+        }
       });
 
-    $urlRouterProvider.otherwise('login');
+    $urlRouterProvider.otherwise('/');
 })
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $state, firebaseRoot, $firebaseSimpleLogin) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -41,6 +43,24 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
         if(window.StatusBar) {
             StatusBar.styleDefault();
         }
+    });
+
+    // Get a reference to the Firebase
+    var firebaseRef = new Firebase(firebaseRoot);
+
+    // Create a Firebase Simple Login object
+    $rootScope.auth = $firebaseSimpleLogin(firebaseRef);
+
+    // Upon successful login, set the user object
+    $rootScope.$on('$firebaseSimpleLogin:login', function(event, user) {
+        $rootScope.user = user;
+        $state.go('tabs.views');
+    });
+
+    // Upon successful logout, reset the user object
+    $rootScope.$on('$firebaseSimpleLogin:logout', function() {
+        $rootScope.user = null;
+        $state.go('login');
     });
 })
 .factory('moodRecord', function($firebase, $rootScope, firebaseRoot) {
@@ -53,11 +73,7 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
 
     return $firebase(ref);
 })
-.controller('TabsCtrl', function($rootScope, $state) {
-    if ($rootScope.user === null) {
-        $state.go('login');
-    }
-})
 .controller('MoodLogCtrl', function($scope, $firebase, moodRecord, $ionicPopup) {
+    console.log('here');
     $scope.moods = moodRecord.$asArray();
 });

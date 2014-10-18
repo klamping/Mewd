@@ -18,7 +18,7 @@
   </div>
 
   <ul class="moods">
-    <li ng-repeat="mood in moods | filter:moodFilter:true" class="mood inline padding-left padding-top">
+    <li ng-repeat="mood in moods | filter:moodFilter:true | orderBy:'name'" class="mood inline padding-left padding-top">
       <button ng-click="setMood(mood)" class="button" ng-class="{ 'button-balanced': mood.positive === 1, 'button-assertive': mood.positive === -1, 'button-stable': mood.positive === 0 }">{{ mood.name }}</button>
     </li>
   </ul>

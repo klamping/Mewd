@@ -9,3 +9,7 @@
 .mood-filter .filters .button:first-child {
     margin-left: 0;
 }
+
+.moods {
+    padding-right: 4em;
+}
