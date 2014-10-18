@@ -1,4 +1,36 @@
-angular.module('moodTracker', ['ionic', 'firebase'])
+angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
+.constant('firebaseRoot', 'https://moodie.firebaseio.com/')
+.config(function ($stateProvider, $urlRouterProvider) {
+
+    $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: '/app/login/login.html',
+        controller: 'LoginCtrl'
+      })
+      .state('tabs', {
+        url: '/',
+        templateUrl: '/app/app.html',
+        controller: 'TabsCtrl'
+      })
+      .state('tabs.record', {
+        url: '/record',
+        templateUrl: '/app/record/record.html',
+        controller: 'RecordCtrl'
+      })
+      .state('tabs.log', {
+        url: '/log',
+        templateUrl: '/app/log/log.html',
+        controller: 'MoodLogCtrl'
+      })
+      .state('tabs.pulse', {
+        url: '/pulse',
+        templateUrl: '/app/pulse/pulse.html',
+        controller: 'MoodPulseCtrl'
+      });
+
+    $urlRouterProvider.otherwise('login');
+})
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -11,53 +43,21 @@ angular.module('moodTracker', ['ionic', 'firebase'])
         }
     });
 })
-.factory("moodRecord", function($firebase, $rootScope) {
-    var ref = new Firebase("https://moodie.firebaseio.com/moodRecord/" + $rootScope.user.uid);
+.factory('moodRecord', function($firebase, $rootScope, firebaseRoot) {
+    var ref = new Firebase(firebaseRoot + '/moodRecord/' + $rootScope.user.uid);
 
     return $firebase(ref);
 })
-.factory("moods", function($firebase, $rootScope) {
-    var ref = new Firebase("https://moodie.firebaseio.com/moods");
+.factory('moods', function($firebase, firebaseRoot, $rootScope) {
+    var ref = new Firebase(firebaseRoot + '/moods');
 
     return $firebase(ref);
 })
-.controller("MoodLogCtrl", function($scope, $firebase, moodRecord, $ionicPopup) {
+.controller('TabsCtrl', function($rootScope, $state) {
+    if ($rootScope.user === null) {
+        $state.go('login');
+    }
+})
+.controller('MoodLogCtrl', function($scope, $firebase, moodRecord, $ionicPopup) {
     $scope.moods = moodRecord.$asArray();
-})
-.controller("MoodPulseCtrl", function($scope, moods, moodRecord) {
-    var storedMoods = moods.$asArray();
-    var records = moodRecord.$asArray();
-
-    var getCounts = function (records) {
-        var counts = [0, 0, 0];
-
-        _.each(records, function (record) {
-            counts[record.positive + 1]++;
-        });
-
-        return counts;
-    };
-
-    storedMoods.$loaded().then(function () {
-        records.$loaded().then(function () {
-            _.each(records, function (record) {
-                // find the associate mood
-                var mood = _.find(storedMoods, { 'name': record.mood });
-
-                if (_.isObject(mood)) {
-                    record.positive = mood.positive;
-                }
-            });
-
-            $scope.counts = getCounts(records);
-
-            var today = new Date();
-            var sevenDaysAgo = today.setDate(today.getDate() - 7);
-            var lastSevenDays = _.filter(records, function (record) {
-                return record.time > sevenDaysAgo;
-            });
-
-            $scope.countSeven = getCounts(lastSevenDays);
-        });
-    });
 });

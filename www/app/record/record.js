@@ -1,5 +1,5 @@
 angular.module('moodTracker')
-.controller("RecordCtrl", function($scope, $firebase, moods, moodRecord, $ionicPopup, $rootScope) {
+.controller('RecordCtrl', function($scope, $firebase, moods, moodRecord, $ionicPopup) {
   $scope.setMood = function (mood) {
     var name = mood.name;
     $ionicPopup.confirm({

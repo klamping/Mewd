@@ -1,0 +1,25 @@
+<ion-header-bar class="bar-positive">
+  <h1 class="title">Record Mood</h1>
+</ion-header-bar>
+<ion-content has-tabs="true">
+  <div class="card mood-filter">
+    <div class="item item-divider">
+      Filter by type:
+    </div>
+    <div class="item row filters" ng-if="moodFilter.positive == undefined">
+      <button class="button button-small button-balanced col" ng-click="filterMood(1)">Positive</button>
+      <button class="button button-small button-stable col" ng-click="filterMood(0)">Neutral</button>
+      <button class="button button-small button-assertive col" ng-click="filterMood(-1)">Negative</button>
+    </div>
+
+    <div class="item row" ng-if="moodFilter.positive !== undefined">
+      <button class="button button-small button-positive button-outline col" ng-click="filterMood()">Reset</button>
+    </div>
+  </div>
+
+  <ul class="moods">
+    <li ng-repeat="mood in moods | filter:moodFilter:true" class="mood inline padding-left padding-top">
+      <button ng-click="setMood(mood)" class="button" ng-class="{ 'button-balanced': mood.positive === 1, 'button-assertive': mood.positive === -1, 'button-stable': mood.positive === 0 }">{{ mood.name }}</button>
+    </li>
+  </ul>
+</ion-content>

@@ -23,6 +23,9 @@
     <!-- AngularFire -->
     <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
 
+    <!-- UI Router -->
+    <script src="lib/angular-ui-router.min.js"></script>
+
     <!-- Bower -->
     <script src="lib/lodash/dist/lodash.min.js"></script>
 
@@ -30,110 +33,9 @@
     <script src="app/app.js"></script>
     <script src="app/login/login.js"></script>
     <script src="app/record/record.js"></script>
+    <script src="app/pulse/pulse.js"></script>
   </head>
   <body ng-app="moodTracker" class="platform-android">
-    <ion-pane ng-if="!user">
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Login</h1>
-      </ion-header-bar>
-      <ion-content ng-controller="loginCtrl">
-        <!-- Buttons -->
-        <button class="button button-full button-positive" ng-click="login('facebook')">Login with Facebook</button>
-
-        <!-- <button class="button button-full button-outline button-assertive" ng-click="logout()">Logout</button> -->
-      </ion-content>
-    </ion-pane>
-
-    <ion-tabs class="tabs-positive tabs-icon-only" ng-if="user" ng-cloak>
-      <ion-tab title="Record" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline" ng-controller="RecordCtrl">
-
-        <ion-header-bar class="bar-positive">
-          <h1 class="title">Record Mood</h1>
-        </ion-header-bar>
-        <ion-content has-tabs="true">
-          <div class="card mood-filter">
-            <div class="item item-divider">
-              Filter by type:
-            </div>
-            <div class="item row filters" ng-if="moodFilter.positive == undefined">
-              <button class="button button-small button-balanced col" ng-click="filterMood(1)">Positive</button>
-              <button class="button button-small button-stable col" ng-click="filterMood(0)">Neutral</button>
-              <button class="button button-small button-assertive col" ng-click="filterMood(-1)">Negative</button>
-            </div>
-
-            <div class="item row" ng-if="moodFilter.positive !== undefined">
-              <button class="button button-small button-positive button-outline col" ng-click="filterMood()">Reset</button>
-            </div>
-          </div>
-
-          <ul class="moods">
-            <li ng-repeat="mood in moods | filter:moodFilter:true" class="mood inline padding-left padding-top">
-              <button ng-click="setMood(mood)" class="button" ng-class="{ 'button-balanced': mood.positive === 1, 'button-assertive': mood.positive === -1, 'button-stable': mood.positive === 0 }">{{ mood.name }}</button>
-            </li>
-          </ul>
-        </ion-content>
-      </ion-tab>
-
-      <ion-tab title="Mood Log" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline"  ng-controller="MoodLogCtrl">
-        <ion-header-bar class="bar-positive">
-          <h1 class="title">Mood Log</h1>
-        </ion-header-bar>
-        <ion-content has-tabs="true">
-          <ion-list>
-            <ion-item ng-repeat="mood in moods | orderBy:'time':true">
-              {{ mood.mood }}
-              <span class="item-note">
-                 {{ mood.time | date:'short' }}
-              </span>
-            </ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-tab>
-
-
-      <ion-tab title="Mood Pulse" icon-on="ion-arrow-graph-up-right" icon-off="ion-arrow-graph-up-right"  ng-controller="MoodPulseCtrl">
-        <ion-header-bar class="bar-positive">
-          <h1 class="title">Mood Pulse</h1>
-        </ion-header-bar>
-        <ion-content has-tabs="true">
-          <div class="list">
-            <div class="item item-divider">Last 7 Days</div>
-            <div class="list-inset">
-              <div class="item item-balanced item-outline">
-                Positive: {{ countSeven[2] }}
-              </div>
-              <div class="item item-stable">
-                Neutral: {{ countSeven[1] }}
-              </div>
-              <div class="item item-assertive">
-                Negative: {{ countSeven[0] }}
-              </div>
-              <div class="item item-text-wrap item-energized">
-                Overall: {{ countSeven[2] - countSeven[0] }}
-              </div>
-            </div>
-
-            <div class="item item-divider">Overall</div>
-            <div class="list-inset">
-              <div class="item item-balanced">
-                Positive: {{ counts[2] }}
-              </div>
-              <div class="item item-stable">
-                Neutral: {{ counts[1] }}
-              </div>
-              <div class="item item-assertive">
-                Negative: {{ counts[0] }}
-              </div>
-              <div class="item item-text-wrap item-energized">
-                Overall: {{ counts[2] - counts[0] }}
-              </div>
-            </div>
-          </div>
-        </div>
-        </ion-content>
-      </ion-tab>
-
-    </ion-tabs>
-
+    <section ui-view ng-cloak></section>
   </body>
 </html>
