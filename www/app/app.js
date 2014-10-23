@@ -27,6 +27,10 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
             'pulse@tabs': {
                 templateUrl: '/app/pulse/pulse.html',
                 controller: 'MoodPulseCtrl'
+            },
+            'settings@tabs': {
+                templateUrl: '/app/settings/settings.html',
+                controller: 'SettingsCtrl'
             }
         }
       });
