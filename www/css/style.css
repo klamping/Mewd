@@ -12,3 +12,10 @@
 .moods {
     padding-right: 4em;
 }
+
+
+.separator {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1.5em 0;
+}

@@ -8,6 +8,11 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
         templateUrl: '/app/login/login.html',
         controller: 'LoginCtrl'
       })
+      .state('register', {
+        url: '/register',
+        templateUrl: '/app/login/register.html',
+        controller: 'RegisterCtrl'
+      })
       .state('tabs', {
         abstract: true,
         url: '/',
@@ -64,6 +69,9 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
     // Upon successful logout, reset the user object
     $rootScope.$on('$firebaseSimpleLogin:logout', function() {
         $rootScope.user = null;
+        if (window.cookies) {
+            window.cookies.clear();
+        }
         $state.go('login');
     });
 })

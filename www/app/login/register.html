@@ -1,0 +1,40 @@
+<ion-pane>
+    <ion-header-bar class="bar-dark">
+      <h1 class="title">Create New Account</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="card card-positive">
+            <div class="item item-text-wrap assertive">
+                <p>No Spam. No Selling Info.</p>
+            </div>
+        </div>
+
+        <div class="card" ng-if="registerError.length > 0">
+          <div class="item item-text-wrap assertive">
+            {{ registerError }}
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <form name="registerForm" class="list">
+                    <label class="item item-input">
+                        <span class="input-label">E-mail</span>
+                        <input type="email" ng-model="creds.email" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Password</span>
+                        <input type="password" ng-model="creds.password" required>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <button class="button button-block" ng-click="register(creds)" ng-disabled="registerForm.$invalid || isRegistering">Create Account</button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-pane>
