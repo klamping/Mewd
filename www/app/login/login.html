@@ -5,8 +5,6 @@
     <ion-content class="padding">
         <button ui-sref="register" class="button button-outline button-positive button-block">Create a New Account</button>
 
-        <button class="button button-outline button-block button-small" ng-click="resetPassword(creds)">Forgot your Password?</button>
-
         <hr class="separator">
 
         <div class="card" ng-if="loginError.length > 0">
@@ -24,6 +22,8 @@
                 <span class="input-label">Password</span>
                 <input type="password">
             </label>
+
+            <button class="button button-outline button-block button-small" ng-click="resetPassword(creds)">Forgot your Password?</button>
 
             <button class="button button-block button-positive button-balanced" ng-click="login('password', creds)" ng-disabled="isLoggingIn">Log in</button>
 

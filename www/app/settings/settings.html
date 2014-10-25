@@ -2,5 +2,14 @@
   <h1 class="title">Settings</h1>
 </ion-header-bar>
 <ion-content has-tabs="true">
-  <button class="button button-royal button-block" ng-click="logout()">Logout</button>
+
+    <div class="card" ng-if="deleteError.length > 0">
+      <div class="item item-text-wrap assertive">
+        {{ deleteError }}
+      </div>
+    </div>
+
+    <button class="button button-royal button-block" ng-click="logout()">Logout</button>
+
+    <button class="button button-assertive button-block" ng-click="deleteAccount()" ng-if="user.email">Delete Account</button>
 </ion-content>
