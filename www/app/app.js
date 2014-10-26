@@ -13,6 +13,10 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
         templateUrl: '/app/login/register.html',
         controller: 'RegisterCtrl'
       })
+      .state('privacy', {
+        url: '/privacy',
+        templateUrl: '/app/privacy.html'
+      })
       .state('tabs', {
         abstract: true,
         url: '/',

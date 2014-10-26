@@ -1,11 +1,9 @@
 angular.module('moodTracker')
-.controller('SettingsCtrl', function($scope, $rootScope,  $ionicPopup, $state) {
+.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup) {
     // Logs a user out
     $scope.logout = function() {
         $rootScope.auth.$logout();
     };
-
-    console.log($rootScope.user.email);
 
     $scope.deleteAccount = function() {
         $ionicPopup.prompt({
