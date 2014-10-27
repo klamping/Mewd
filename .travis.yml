@@ -1,0 +1,7 @@
+language: node
+node_js:
+  - "0.10"
+branches:
+  only:
+  - master
+script: npm run-script deploy

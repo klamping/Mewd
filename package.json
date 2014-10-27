@@ -2,6 +2,9 @@
   "name": "Mewd",
   "version": "0.0.1",
   "description": "A minimilistic app for tracking moods",
+  "scripts": {
+    "deploy": "./deploy-ghpages.sh"
+  },
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
