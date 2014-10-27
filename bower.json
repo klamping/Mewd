@@ -6,6 +6,6 @@
     "lodash": "~2.4.1"
   },
   "dependencies": {
-    "angular-ui-router": "~0.2.11"
+    "angular-ui-router": "0.2.10"
   }
 }
