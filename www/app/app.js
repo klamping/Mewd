@@ -5,40 +5,40 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
     $stateProvider
       .state('login', {
         url: '/login',
-        templateUrl: '/app/login/login.html',
+        templateUrl: 'app/login/login.html',
         controller: 'LoginCtrl'
       })
       .state('register', {
         url: '/register',
-        templateUrl: '/app/login/register.html',
+        templateUrl: 'app/login/register.html',
         controller: 'RegisterCtrl'
       })
       .state('privacy', {
         url: '/privacy',
-        templateUrl: '/app/privacy.html'
+        templateUrl: 'app/privacy.html'
       })
       .state('tabs', {
         abstract: true,
         url: '/',
-        templateUrl: '/app/app.html'
+        templateUrl: 'app/app.html'
       })
       .state('tabs.views', {
         url: '',
         views: {
             'record@tabs': {
-                templateUrl: '/app/record/record.html',
+                templateUrl: 'app/record/record.html',
                 controller: 'RecordCtrl'
             },
             'log@tabs': {
-                templateUrl: '/app/log/log.html',
+                templateUrl: 'app/log/log.html',
                 controller: 'MoodLogCtrl'
             },
             'pulse@tabs': {
-                templateUrl: '/app/pulse/pulse.html',
+                templateUrl: 'app/pulse/pulse.html',
                 controller: 'MoodPulseCtrl'
             },
             'settings@tabs': {
-                templateUrl: '/app/settings/settings.html',
+                templateUrl: 'app/settings/settings.html',
                 controller: 'SettingsCtrl'
             }
         }
