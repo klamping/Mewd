@@ -13,7 +13,10 @@ angular.module('moodTracker')
                     template: 'Your account has been created. You will now be logged in.'
                 });
                 alertPopup.then(function () {
-                    $rootScope.auth.$login('password', creds);
+                    $rootScope.auth.$login('password', creds)
+                    .then(function () {
+                        $state.go('tabs.views');
+                    });
                 });
 
             }, function (err) {

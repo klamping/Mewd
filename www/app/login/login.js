@@ -10,6 +10,9 @@ angular.module('moodTracker')
     $scope.login = function(provider, creds) {
         $scope.isLoggingIn = true;
         $rootScope.auth.$login(provider, creds)
+        .then(function () {
+            $state.go('tabs.views');
+        })
         .finally(function () {
             $scope.isLoggingIn = false;
         });

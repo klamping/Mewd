@@ -20,7 +20,10 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
       .state('tabs', {
         abstract: true,
         url: '/',
-        templateUrl: 'app/app.html'
+        templateUrl: 'app/app.html',
+        data: {
+            authenticate: true
+        }
       })
       .state('tabs.views', {
         url: '',
@@ -67,7 +70,6 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
     // Upon successful login, set the user object
     $rootScope.$on('$firebaseSimpleLogin:login', function(event, user) {
         $rootScope.user = user;
-        $state.go('tabs.views');
     });
 
     // Upon successful logout, reset the user object
@@ -76,7 +78,10 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
         if (window.cookies) {
             window.cookies.clear();
         }
-        $state.go('login');
+
+        if ($state.current.data && $state.current.data.authenticate) {
+            $state.go('login');
+        }
     });
 })
 .factory('moodRecord', function($firebase, $rootScope, firebaseRoot) {
