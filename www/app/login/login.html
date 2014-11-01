@@ -23,9 +23,9 @@
                 <input type="password" ng-model="creds.password">
             </label>
 
-            <button class="button button-outline button-block button-small" ng-click="resetPassword(creds)">Forgot your Password?</button>
-
             <button class="button button-block button-positive button-balanced" ng-click="login('password', creds)" ng-disabled="isLoggingIn">Log in</button>
+
+            <button class="button button-outline button-block button-small" ng-click="resetPassword(creds)">Forgot your Password?</button>
 
             <div class="button-bar">
                 <button class="button button-block button-positive ion-social-facebook icon-left" ng-click="login('facebook')">via Facebook</button>

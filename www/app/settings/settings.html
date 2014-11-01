@@ -1,17 +1,51 @@
 <ion-header-bar class="bar-positive">
-  <h1 class="title">Settings</h1>
+    <div class="buttons">
+        <button class="button button-assertive" ng-click="deleteAccount()" ng-if="user.email">Delete Account</button>
+    </div>
+    <h1 class="title">Settings</h1>
 </ion-header-bar>
-<ion-content has-tabs="true">
+<ion-content has-tabs="true" class="padding">
 
-    <div class="card" ng-if="deleteError.length > 0">
-      <div class="item item-text-wrap assertive">
-        {{ deleteError }}
-      </div>
+    <div class="card" ng-if="errMsg.length > 0">
+        <div class="item item-text-wrap assertive">
+            {{ errMsg }}
+        </div>
     </div>
 
-    <button class="button button-royal button-block" ng-click="logout()">Logout</button>
+    <button class="button button-light button-block" ng-show="user.email" ng-click="openPopover($event)">Change Password</button>
 
-    <button class="button button-assertive button-block" ng-click="deleteAccount()" ng-if="user.email">Delete Account</button>
+    <script id="changePassword.html" type="text/ng-template">
+        <ion-popover-view>
+            <ion-header-bar>
+                <h1 class="title">Change Password</h1>
+            </ion-header-bar>
+            <ion-content>
+
+                <div class="card" ng-if="pwChgErr.length > 0">
+                    <div class="item item-text-wrap assertive">
+                        {{ pwChgErr }}
+                    </div>
+                </div>
+
+                <form name="passwordChange">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Old Password</span>
+                            <input type="password" ng-model="oldPw" placeholder="Type Old Password" required="true">
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">New Password</span>
+                            <input type="password" ng-model="newPw" placeholder="Type New Password" required="true">
+                        </label>
+                    </div>
+
+                    <button class="button button-positive button-full button-outline" ng-click="changePassword(oldPw, newPw)" ng-disabled="passwordChange.$invalid">Submit Password Change</button>
+                </form>
+            </ion-content>
+        </ion-popover-view>
+    </script>
+
+    <button class="button button-light button-block" ng-click="logout()">Logout</button>
 
     <button class="button button-light button-block" ui-sref="privacy">Review Privacy Policy</button>
 </ion-content>
