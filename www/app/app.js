@@ -93,7 +93,4 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router'])
     var ref = new Firebase(firebaseRoot + '/moods');
 
     return $firebase(ref);
-})
-.controller('MoodLogCtrl', function($scope, $firebase, moodRecord, $ionicPopup) {
-    $scope.moods = moodRecord.$asArray();
 });

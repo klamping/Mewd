@@ -1,13 +1,16 @@
 <ion-header-bar class="bar-positive">
-  <h1 class="title">Mood Log</h1>
+    <button class="button button-icon icon ion-ios7-minus-outline" ng-click="showDelete = !showDelete"></button>
+    <h1 class="title">Mood Log</h1>
 </ion-header-bar>
 <ion-content has-tabs="true">
-  <ion-list>
-    <ion-item ng-repeat="mood in moods | orderBy:'time':true">
-      {{ mood.mood }}
-      <span class="item-note">
-         {{ mood.time | date:'short' }}
-      </span>
-    </ion-item>
-  </ion-list>
+    <ion-list
+    show-delete="showDelete">
+        <ion-item ng-repeat="mood in moods | orderBy:'time':true">
+            <ion-delete-button class="ion-minus-circled" ng-click="deleteMood(mood)"></ion-delete-button>
+            {{ mood.mood }}
+            <span class="item-note">
+                {{ mood.time | date:'short' }}
+            </span>
+        </ion-item>
+    </ion-list>
 </ion-content>
