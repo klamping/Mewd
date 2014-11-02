@@ -27,9 +27,9 @@
         </div>
         <div class="item item-text-wrap">
             <div class="row pulse">
-                <div class="col balanced">Positive: {{ counts[2] }}</div>
-                <div class="col">Neutral: {{ counts[1] }}</div>
-                <div class="col assertive">Negative: {{ counts[0] }}</div>
+                <div class="col balanced">Positive<br> {{ counts[2] }}</div>
+                <div class="col">Neutral<br> {{ counts[1] }}</div>
+                <div class="col assertive">Negative<br> {{ counts[0] }}</div>
             </div>
             <hr>
             <div class="row pulse">
@@ -38,27 +38,23 @@
                 </div>
             </div>
         </div>
-    </div><!--
+    </div>
 
     <div class="card">
         <div class="item item-divider">
-            Running Positivity
+            Positivity Over Time
         </div>
         <div class="item item-text-wrap">
-            <canvas class="chart chart-line" data="data" series="series" labels=""></canvas>
-
-            <canvas class="chart chart-line" data="data"
-              labels="labels" legend="true" series="series">
-            </canvas>
+            <canvas class="chart chart-line" data="runningPositivity" labels="runningLabels" options="runningOptions"></canvas>
         </div>
-    </div> -->
+    </div>
 
     <div class="card">
         <div class="item item-divider">
             Mood Distribution
         </div>
         <div class="item item-text-wrap">
-            <canvas id="polar-area" class="chart chart-polar-area" data="counts" labels="['negative', 'neutral', 'positive']" colours="polarColors"></canvas>
+            <canvas class="chart chart-polar-area" data="counts" labels="distributionLabels" colours="distributionColors" legend="true"></canvas>
         </div>
     </div>
 </ion-content>
