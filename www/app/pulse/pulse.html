@@ -1,39 +1,64 @@
 <ion-header-bar class="bar-positive">
-  <h1 class="title">Mood Pulse</h1>
+    <h1 class="title">Mood Pulse</h1>
 </ion-header-bar>
-<ion-content has-tabs="true">
-  <div class="list">
-    <div class="item item-divider">Last 7 Days</div>
-    <div class="list-inset">
-      <div class="item item-balanced item-outline">
-        Positive: {{ countSeven[2] }}
-      </div>
-      <div class="item item-stable">
-        Neutral: {{ countSeven[1] }}
-      </div>
-      <div class="item item-assertive">
-        Negative: {{ countSeven[0] }}
-      </div>
-      <div class="item item-text-wrap item-energized">
-        Overall: {{ countSeven[2] - countSeven[0] }}
-      </div>
+<ion-content has-tabs="true" class="padding">
+    <div class="card">
+        <div class="item item-divider">
+            Last 7 Days
+        </div>
+        <div class="item item-text-wrap">
+            <div class="row pulse">
+                <div class="col balanced">Positive: {{ countSeven[2] }}</div>
+                <div class="col">Neutral: {{ countSeven[1] }}</div>
+                <div class="col assertive">Negative: {{ countSeven[0] }}</div>
+            </div>
+            <hr>
+            <div class="row pulse">
+                <div class="col royal">
+                    Positivity: {{ countSeven[2] - countSeven[0] }}
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="item item-divider">Overall</div>
-    <div class="list-inset">
-      <div class="item item-balanced">
-        Positive: {{ counts[2] }}
-      </div>
-      <div class="item item-stable">
-        Neutral: {{ counts[1] }}
-      </div>
-      <div class="item item-assertive">
-        Negative: {{ counts[0] }}
-      </div>
-      <div class="item item-text-wrap item-energized">
-        Overall: {{ counts[2] - counts[0] }}
-      </div>
+    <div class="card">
+        <div class="item item-divider">
+            All Time
+        </div>
+        <div class="item item-text-wrap">
+            <div class="row pulse">
+                <div class="col balanced">Positive: {{ counts[2] }}</div>
+                <div class="col">Neutral: {{ counts[1] }}</div>
+                <div class="col assertive">Negative: {{ counts[0] }}</div>
+            </div>
+            <hr>
+            <div class="row pulse">
+                <div class="col royal">
+                    Positivity: {{ counts[2] - counts[0] }}
+                </div>
+            </div>
+        </div>
+    </div><!--
+
+    <div class="card">
+        <div class="item item-divider">
+            Running Positivity
+        </div>
+        <div class="item item-text-wrap">
+            <canvas class="chart chart-line" data="data" series="series" labels=""></canvas>
+
+            <canvas class="chart chart-line" data="data"
+              labels="labels" legend="true" series="series">
+            </canvas>
+        </div>
+    </div> -->
+
+    <div class="card">
+        <div class="item item-divider">
+            Mood Distribution
+        </div>
+        <div class="item item-text-wrap">
+            <canvas id="polar-area" class="chart chart-polar-area" data="counts" labels="['negative', 'neutral', 'positive']" colours="polarColors"></canvas>
+        </div>
     </div>
-  </div>
-</div>
 </ion-content>

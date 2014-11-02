@@ -19,3 +19,24 @@
     border-top: 1px solid #ccc;
     margin: 1.5em 0;
 }
+
+.pulse {
+    text-align: center;
+}
+
+.title.section {
+    background: #eee;
+    font-size: 1.3em;
+    border: 1px solid #aaa;
+    margin-bottom: 1em;
+    padding: .5em 1em;
+}
+
+hr {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+    margin: 0;
+    height: 0;
+}
