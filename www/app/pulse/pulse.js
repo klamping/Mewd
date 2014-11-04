@@ -76,7 +76,12 @@ angular.module('moodTracker')
             pointDot: false,
             scaleShowGridLines: false,
             showTooltips: false,
-            responsive: true
+            responsive: true,
+            animation: false
+        };
+
+        $scope.distributionOptions = {
+            animation: false
         };
 
         $scope.counts = getCounts(records);

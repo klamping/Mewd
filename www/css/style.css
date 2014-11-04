@@ -32,6 +32,10 @@
     padding: .5em 1em;
 }
 
+.title.sm {
+    font-size: 1em;
+}
+
 hr {
     background: none;
     border: 0;

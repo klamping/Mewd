@@ -1,4 +1,4 @@
-angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js'])
+angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ngCordova'])
 .constant('firebaseRoot', 'https://moodie.firebaseio.com/')
 .config(function ($stateProvider, $urlRouterProvider) {
 

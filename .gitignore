@@ -4,6 +4,7 @@ www/lib/
 *.keystore
 *.sw*
 platforms/
+plugins/
 
 npm-debug.log
 

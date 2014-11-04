@@ -41,4 +41,69 @@
     <button class="button button-light button-block" ng-click="logout()">Logout</button>
 
     <button class="button button-light button-block" ui-sref="privacy">Review Privacy Policy</button>
+
+    <hr>
+
+    <h2 class="section title">Reminders</h2>
+
+    <ion-item ng-repeat="reminder in reminders" ng-if="reminders.length > 0">
+        {{ reminder | date:'shortTime' }}
+        <span class="item-note">
+            <button class="button button-assertive button-small" ng-click="deleteReminder(reminder)">Delete</button>
+            <!-- {{ reminder.repeat | date:'short' }} -->
+        </span>
+    </ion-item>
+
+    <p ng-if="reminders.length === 0" class="assertive">
+        No Reminders Currently Set
+    </p>
+
+    <h3 class="section title sm">Create a New Reminder</h3>
+
+    <div class="list">
+        <ion-checkbox ng-model="reminder.silent">Quiet Notification?</ion-checkbox>
+
+        <div class="item item-divider">
+            Reminder Time
+        </div>
+
+        <div class="item item-button-right">
+            {{ reminder.time | date:'shortTime' }}
+            <button class="button button-positive" ng-click="selectTime()"><i class="icon ion-ios7-time-outline"></i></button>
+        </div>
+
+        <div class="item item-divider">
+            Repeat Interval
+        </div>
+
+        <ion-radio ng-repeat="frequency in frequencies"
+                   ng-value="frequency.value"
+                   ng-model="reminder.repeat">
+            {{ frequency.text }}
+        </ion-radio>
+    </label>
+
+    <!-- Set Quiet Hours -->
+    <!-- Set Number of Reminders per day -->
+
+    <button ng-click="addReminder()" class="button button-block button-balanced">Add New Reminder</button>
 </ion-content>
+
+<!-- <ion-side-menus>
+    <ion-side-menu side="left">
+        <ion-side-menu-content ng-controller="RemindersCtrl">
+            HERE
+            <ion-list
+            show-delete="showDelete">
+                <ion-item ng-repeat="reminder in reminders | orderBy:'time':true">
+                    <ion-delete-button class="ion-minus-circled" ng-click="deleteReminder(reminder)"></ion-delete-button>
+                    {{ reminder }}
+                    <span class="item-note">
+                        {{ reminder.time | date:'short' }}
+                        {{ reminder.repeat | date:'short' }}
+                    </span>
+                </ion-item>
+            </ion-list>
+        </ion-side-menu-content>
+    </ion-side-menu>
+</ion-side-menus> -->

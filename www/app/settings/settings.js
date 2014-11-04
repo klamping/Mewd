@@ -1,5 +1,6 @@
 angular.module('moodTracker')
-.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $ionicPopover) {
+.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $ionicPopover, $cordovaDatePicker, $cordovaLocalNotification) {
+
     // Logs a user out
     $scope.logout = function() {
         $rootScope.auth.$logout();
@@ -55,5 +56,88 @@ angular.module('moodTracker')
                 $scope.errMsg = err.message;
             });
         });
+    };
+
+    $scope.fetchReminders = function () {
+        $cordovaLocalNotification.getScheduledIds().then(function (scheduledIds) {
+            $scope.reminders = scheduledIds;
+        });
+    }
+    $scope.fetchReminders();
+
+    $scope.reminder = {
+        time: new Date()
+    };
+
+    $scope.frequencies = [
+        { text: 'Never', value: '' },
+        { text: 'Every Hour', value: 'hourly' },
+        { text: 'Every Day', value: 'daily' },
+        { text: 'Every Week', value: 'weekly' }
+    ];
+
+    $scope.selectTime = function () {
+        var options = {
+            date: new Date(),
+            mode: 'time'
+        };
+
+        $cordovaDatePicker.show(options).then(function(time){
+            if (time.getTime() > 0) {
+                $scope.reminder.time = new Date(time);
+            }
+        });
+    };
+
+    $cordovaLocalNotification.setDefaults({
+        title: 'How are you feeling?',
+        message: 'Remember to log your mood',
+        autoCancel: true
+    });
+
+    $scope.addReminder = function () {
+        var reminderTime = $scope.reminder.time.getTime();
+
+        var reminderOpts = {
+            id: reminderTime,
+            date: $scope.reminder.time
+        };
+
+        if ($scope.reminder.repeat) {
+            reminderOpts.repeat = $scope.reminder.repeat;
+        };
+        if ($scope.reminder.silent) {
+            reminderOpts.sound = null;
+        }
+
+        $cordovaLocalNotification.add(reminderOpts);
+    };
+
+    $scope.deleteReminder = function (id) {
+        $cordovaLocalNotification.cancel(id);
+    };
+
+    window.plugin.notification.local.oncancel = function () {
+        $scope.fetchReminders();
+    };
+
+    window.plugin.notification.local.onadd = function () {
+        $scope.reminder = {
+            time: new Date()
+        };
+        $scope.fetchReminders();
+
+        $ionicPopup.alert({
+            title: 'Reminder Added'
+        });
+    };
+
+    window.plugin.notification.local.ontrigger = function (id, state, json) {
+        $scope.fetchReminders();
+    };
+
+    window.plugin.notification.local.onclick = function (id, state, json) {
+        // create a new reminder based on rules
+        // console.log('clicked', id);
     };
 });
