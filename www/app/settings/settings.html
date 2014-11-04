@@ -46,7 +46,7 @@
 
     <h2 class="section title">Reminders</h2>
 
-    <ion-item ng-repeat="reminder in reminders" ng-if="reminders.length > 0">
+    <ion-item ng-repeat="reminder in reminders | orderBy:toString" ng-if="reminders.length > 0">
         {{ reminder | date:'shortTime' }}
         <span class="item-note">
             <button class="button button-assertive button-small" ng-click="deleteReminder(reminder)">Delete</button>
