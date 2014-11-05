@@ -42,49 +42,91 @@
 
     <button class="button button-light button-block" ui-sref="privacy">Review Privacy Policy</button>
 
-    <hr>
+    <div class="list">
+        <div class="item item-divider">
+            Reminders
+        </div>
+        <ion-item ng-repeat="reminder in reminders | orderBy:toString" ng-if="reminders.length > 0">
+            {{ reminder | date:'shortTime' }}
+            <span class="item-note">
+                <button class="button button-assertive button-small" ng-click="deleteReminder(reminder)">Delete</button>
+                <!-- {{ reminder.repeat | date:'short' }} -->
+            </span>
+        </ion-item>
 
-    <h2 class="section title">Reminders</h2>
-
-    <ion-item ng-repeat="reminder in reminders | orderBy:toString" ng-if="reminders.length > 0">
-        {{ reminder | date:'shortTime' }}
-        <span class="item-note">
-            <button class="button button-assertive button-small" ng-click="deleteReminder(reminder)">Delete</button>
-            <!-- {{ reminder.repeat | date:'short' }} -->
-        </span>
-    </ion-item>
-
-    <p ng-if="reminders.length === 0" class="assertive">
-        No Reminders Currently Set
-    </p>
-
-    <h3 class="section title sm">Create a New Reminder</h3>
+        <div ng-if="reminders.length === 0" class="item assertive">
+            No Reminders Currently Set
+        </div>
+    </div>
 
     <div class="list">
-        <ion-checkbox ng-model="reminder.silent">Quiet Notification?</ion-checkbox>
-
         <div class="item item-divider">
-            Reminder Time
+            Create a New Reminder
         </div>
 
-        <div class="item item-button-right">
-            {{ reminder.time | date:'shortTime' }}
-            <button class="button button-positive" ng-click="selectTime()"><i class="icon ion-ios7-time-outline"></i></button>
+        <label class="item item-input item-select">
+            <div class="input-label">
+                Interval Type
+            </div>
+            <select ng-model="reminder.type">
+                <option value="standard">Standard</option>
+                <option value="custom">Custom</option>
+                <!-- <option value="random">Random</option> -->
+            </select>
+        </label>
+    </div>
+
+    <div class="list list-inset" ng-switch on="reminder.type">
+        <div ng-switch-when="standard">
+            <div class="item item-divider">
+                Reminder Time
+            </div>
+
+            <div class="item item-button-right">
+                {{ reminder.time | date:'shortTime' }}
+                <button class="button button-positive" ng-click="selectTime()"><i class="icon ion-ios7-time-outline"></i></button>
+            </div>
+
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Repeat Interval
+                </div>
+                <select ng-model="reminder.repeat" ng-options="f.value as f.text for f in standardFrequencies">
+                </select>
+            </label>
         </div>
 
-        <div class="item item-divider">
-            Repeat Interval
+        <div ng-switch-when="custom">
+            <div class="item item-divider">
+                Repeat Interval
+            </div>
+            <div class="item item-input">
+                <span class="input-label">Repeat every</span>
+
+                <div class="row row-center">
+                    <div class="col">
+                        <input type="number" min="1" step="1" ng-model="repeat.interval" placeholder="amount">
+                    </div>
+
+                    <div class="col">
+                        <select ng-model="repeat.type" ng-options="frequency.text for frequency in customFrequencies"></select>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <ion-radio ng-repeat="frequency in frequencies"
-                   ng-value="frequency.value"
-                   ng-model="reminder.repeat">
-            {{ frequency.text }}
-        </ion-radio>
-    </label>
+        <!-- <div class="item item-divider">
+            Set Quiet Hours
+        </div>
 
-    <!-- Set Quiet Hours -->
-    <!-- Set Number of Reminders per day -->
+        <div class="item">
+            <button class="button button-positive" ng-click="selectQuietHours('start')">Start Time <i class="icon ion-ios7-time-outline"></i></button>
+
+            <button class="button button-positive" ng-click="selectQuietHours('end')">End Time <i class="icon ion-ios7-time-outline"></i></button>
+        </div>
+ -->
+        <ion-checkbox ng-model="reminder.silent">Mute Notification Sounds</ion-checkbox>
+    </div>
 
     <button ng-click="addReminder()" class="button button-block button-balanced">Add New Reminder</button>
 </ion-content>

@@ -58,23 +58,61 @@ angular.module('moodTracker')
         });
     };
 
+
+    // reminders
+
     $scope.fetchReminders = function () {
         $cordovaLocalNotification.getScheduledIds().then(function (scheduledIds) {
             $scope.reminders = scheduledIds;
         });
     }
+
     $scope.fetchReminders();
 
     $scope.reminder = {
         time: new Date()
     };
 
-    $scope.frequencies = [
-        { text: 'Never', value: '' },
-        { text: 'Every Hour', value: 'hourly' },
-        { text: 'Every Day', value: 'daily' },
-        { text: 'Every Week', value: 'weekly' }
+    $scope.standardFrequencies = [{
+            text: 'Never',
+            value: ''
+        }, {
+            text: 'Every Minute',
+            value: 'minutely'
+        }, {
+            text: 'Every Hour',
+            value: 'hourly'
+        }, {
+            text: 'Every Day',
+            value: 'daily'
+        }, {
+            text: 'Every Week',
+            value: 'weekly'
+        }
     ];
+
+    $scope.reminder.repeat = '';
+
+    $scope.customFrequencies = [{
+            text: 'minute(s)',
+            value: 1
+        }, {
+            text: 'hour(s)',
+            value: 60
+        }, {
+            text: 'day(s)',
+            value: 1440
+        }, {
+            text: 'week(s)',
+            value: 10080
+        }
+    ];
+
+    $scope.reminder.type = 'standard';
+
+    $scope.repeat = {
+        type: $scope.customFrequencies[0]
+    };
 
     $scope.selectTime = function () {
         var options = {
@@ -96,16 +134,31 @@ angular.module('moodTracker')
     });
 
     $scope.addReminder = function () {
-        var reminderTime = $scope.reminder.time.getTime();
+        var reminderId, reminderDate;
+
+        if ($scope.reminder.type == 'standard') {
+            reminderDate = $scope.reminder.time;
+            reminderId = reminderDate.getTime();
+        } else if ($scope.reminder.type == 'custom') {
+            reminderId = 'Every ' + $scope.repeat.interval + ' ' + $scope.repeat.type.text;
+
+            var intervalMs = $scope.repeat.interval * ($scope.repeat.type.value * 60000);
+
+            // set start time
+            reminderDate = new Date(Date.now() + intervalMs);
+
+            $scope.reminder.repeat = $scope.repeat.type.value;
+        }
 
         var reminderOpts = {
-            id: reminderTime,
-            date: $scope.reminder.time
+            id: reminderId,
+            date: reminderDate
         };
 
         if ($scope.reminder.repeat) {
             reminderOpts.repeat = $scope.reminder.repeat;
         };
+
         if ($scope.reminder.silent) {
             reminderOpts.sound = null;
         }
@@ -122,14 +175,12 @@ angular.module('moodTracker')
     };
 
     window.plugin.notification.local.onadd = function () {
-        $scope.reminder = {
-            time: new Date()
-        };
-        $scope.fetchReminders();
-
         $ionicPopup.alert({
             title: 'Reminder Added'
         });
+
+        $scope.fetchReminders();
+
     };
 
     window.plugin.notification.local.ontrigger = function (id, state, json) {
