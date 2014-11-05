@@ -7,10 +7,13 @@
     show-delete="showDelete">
         <ion-item ng-repeat="mood in moods | orderBy:'time':true">
             <ion-delete-button class="ion-minus-circled" ng-click="deleteMood(mood)"></ion-delete-button>
-            {{ mood.mood }}
-            <span class="item-note">
-                {{ mood.time | date:'short' }}
-            </span>
+            <div ng-click="showDetails(mood)">
+                <span class="item-note">
+                    {{ mood.time | date:'short' }}
+                </span>
+                <h2>{{ mood.mood }}</h2>
+                <p>{{ mood.note }}</p>
+            </div>
         </ion-item>
     </ion-list>
 </ion-content>

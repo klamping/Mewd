@@ -3,19 +3,23 @@ angular.module('moodTracker')
     var saveMood = function (mood) {
         moodRecord.$asArray().$add({
             mood: mood.name,
+            note: mood.note,
             positivity: mood.positive,
             time: Date.now()
         });
     };
 
     $scope.setMood = function (mood) {
-        var name = mood.name;
-        $ionicPopup.confirm({
-            title: 'Feeling ' + name + '?',
+        $ionicPopup.prompt({
+            title: 'Feeling ' + mood.name + '?',
             okText: 'Yep',
-            cancelText: 'Nope'
-        }).then(function (hasConfirmed) {
-            if (hasConfirmed) {
+            cancelText: 'Nope',
+            inputType: 'text',
+            inputPlaceholder: 'Add an Optional Note'
+        }).then(function (note) {
+            if (typeof note !== 'undefined') {
+                mood.note = note;
+
                 saveMood(mood);
             }
         });
