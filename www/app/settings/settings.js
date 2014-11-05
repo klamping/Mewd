@@ -142,12 +142,12 @@ angular.module('moodTracker')
         } else if ($scope.reminder.type == 'custom') {
             reminderId = 'Every ' + $scope.repeat.interval + ' ' + $scope.repeat.type.text;
 
-            var intervalMs = $scope.repeat.interval * ($scope.repeat.type.value * 60000);
+            var interval = $scope.repeat.interval * $scope.repeat.type.value;
 
             // set start time
-            reminderDate = new Date(Date.now() + intervalMs);
+            reminderDate = new Date(Date.now() + (interval  * 60000));
 
-            $scope.reminder.repeat = $scope.repeat.type.value;
+            $scope.reminder.repeat = interval;
         }
 
         var reminderOpts = {
