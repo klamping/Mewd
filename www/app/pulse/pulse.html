@@ -2,59 +2,37 @@
     <h1 class="title">Mood Pulse</h1>
 </ion-header-bar>
 <ion-content has-tabs="true" class="padding">
-    <div class="card">
-        <div class="item item-divider">
-            Last 7 Days
-        </div>
-        <div class="item item-text-wrap">
-            <div class="row pulse">
-                <div class="col balanced">Positive: {{ countSeven[2] }}</div>
-                <div class="col">Neutral: {{ countSeven[1] }}</div>
-                <div class="col assertive">Negative: {{ countSeven[0] }}</div>
-            </div>
-            <hr>
-            <div class="row pulse">
-                <div class="col royal">
-                    Positivity: {{ countSeven[2] - countSeven[0] }}
-                </div>
-            </div>
-        </div>
-    </div>
+    <ion-list>
+        <label class="item item-input item-select">
+            <span class="input-label">Set Time Frame</span>
+            <select ng-change="setTimeframe(timeframe)" ng-options="tf.label for tf in timeframes" ng-model="timeframe"></select>
+        </label>
+    </ion-list>
 
-    <div class="card">
-        <div class="item item-divider">
-            All Time
+    <div class="card" ng-if="timeframeRecords.length > 0">
+        <div class="item" ng-class="{ 'balanced': overallPositivity > 0, 'calm': overallPositivity == 0,
+        'assertive': overallPositivity < 0 }">
+            Overall Positivity: {{ overallPositivity }}
         </div>
-        <div class="item item-text-wrap">
-            <div class="row pulse">
-                <div class="col balanced">Positive<br> {{ counts[2] }}</div>
-                <div class="col">Neutral<br> {{ counts[1] }}</div>
-                <div class="col assertive">Negative<br> {{ counts[0] }}</div>
-            </div>
-            <hr>
-            <div class="row pulse">
-                <div class="col royal">
-                    Positivity: {{ counts[2] - counts[0] }}
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="card">
         <div class="item item-divider">
             Positivity Over Time
         </div>
-        <div class="item item-text-wrap">
-            <canvas class="chart chart-line" data="runningPositivity" labels="runningLabels" options="runningOptions"></canvas>
+        <div class="item item-body">
+            <canvas class="chart chart-line" data="[runningPositivity]" labels="runningLabels" options="runningOptions"></canvas>
         </div>
-    </div>
 
-    <div class="card">
         <div class="item item-divider">
             Mood Distribution
         </div>
-        <div class="item item-text-wrap">
-            <canvas class="chart chart-polar-area" data="counts" labels="distributionLabels" colours="distributionColors" legend="true" options="distributionOptions"></canvas>
+        <div class="item item-body">
+            <canvas class="chart chart-doughnut" data="polarCounts" labels="distributionLabels" colours="distributionColors" legend="true" options="distributionOptions"></canvas>
         </div>
+    </div>
+
+    <div class="card" ng-if="timeframeRecords.length === 0">
+        <ion-item class="assertive">
+            No moods logged during this timeframe.
+        </ion-item>
     </div>
 </ion-content>
