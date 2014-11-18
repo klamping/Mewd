@@ -1,0 +1,38 @@
+<ion-header-bar class="bar-positive">
+    <h1 class="title">Mood Pulse</h1>
+</ion-header-bar>
+<ion-content has-tabs="true" class="padding">
+    <ion-list>
+        <label class="item item-input item-select">
+            <span class="input-label">Set Time Frame</span>
+            <select ng-change="setTimeframe(timeframe)" ng-options="tf.label for tf in timeframes" ng-model="timeframe"></select>
+        </label>
+    </ion-list>
+
+    <div class="card" ng-if="timeframeRecords.length > 0">
+        <div class="item" ng-class="{ 'balanced': overallPositivity > 0, 'calm': overallPositivity == 0,
+        'assertive': overallPositivity < 0 }">
+            Overall Positivity: {{ overallPositivity }}
+        </div>
+
+        <div class="item item-divider">
+            Positivity Over Time
+        </div>
+        <div class="item item-body">
+            <canvas class="chart chart-line" data="[runningPositivity]" labels="runningLabels" options="runningOptions"></canvas>
+        </div>
+
+        <div class="item item-divider">
+            Mood Distribution
+        </div>
+        <div class="item item-body">
+            <canvas class="chart chart-doughnut" data="polarCounts" labels="distributionLabels" colours="distributionColors" legend="true" options="distributionOptions"></canvas>
+        </div>
+    </div>
+
+    <div class="card" ng-if="timeframeRecords.length === 0">
+        <ion-item class="assertive">
+            No moods logged during this timeframe.
+        </ion-item>
+    </div>
+</ion-content>

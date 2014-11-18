@@ -1,0 +1,17 @@
+<ion-header-bar class="bar-positive">
+    <button class="button button-icon icon ion-ios7-minus-outline" ng-click="showDelete = !showDelete"></button>
+    <h1 class="title">Reminders</h1>
+</ion-header-bar>
+<ion-content has-tabs="true">
+    <ion-list
+    show-delete="showDelete">
+        <ion-item ng-repeat="reminder in reminders | orderBy:'time':true">
+            <ion-delete-button class="ion-minus-circled" ng-click="deleteMood(mood)"></ion-delete-button>
+            {{ reminder }}
+            <span class="item-note">
+                {{ reminder.time | date:'short' }}
+                {{ reminder.repeat | date:'short' }}
+            </span>
+        </ion-item>
+    </ion-list>
+</ion-content>

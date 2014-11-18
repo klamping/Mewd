@@ -1,0 +1,14 @@
+<ion-tabs class="tabs-positive tabs-icon-only" ng-if="$root.user">
+  <ion-tab title="Record" icon-on="ion-ios7-filing" icon-off="ion-ios7-filing-outline">
+    <div ui-view="record"></div>
+  </ion-tab>
+  <ion-tab title="Mood Log" icon-on="ion-ios7-clock" icon-off="ion-ios7-clock-outline">
+    <div ui-view="log"></div>
+  </ion-tab>
+  <ion-tab title="Mood Pulse" icon-on="ion-arrow-graph-up-right" icon-off="ion-arrow-graph-up-right">
+    <div ui-view="pulse"></div>
+  </ion-tab>
+  <ion-tab title="Settings" icon-on="ion-ios7-gear" icon-off="ion-ios7-gear-outline">
+    <div ui-view="settings"></div>
+  </ion-tab>
+</ion-tabs>

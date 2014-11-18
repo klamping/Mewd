@@ -1,0 +1,46 @@
+.mood-filter {
+    margin-top:10px;
+    margin-bottom:5px;
+}
+.mood-filter .filters .button {
+    margin-left: 5px;
+}
+.mood-filter .filters .button:first-child {
+    margin-left: 0;
+}
+
+.moods {
+    padding-right: 4em;
+}
+
+
+.separator {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1.5em 0;
+}
+
+.pulse {
+    text-align: center;
+}
+
+.title.section {
+    background: #eee;
+    font-size: 1.3em;
+    border: 1px solid #aaa;
+    margin-bottom: 1em;
+    padding: .5em 1em;
+}
+
+.title.sm {
+    font-size: 1em;
+}
+
+hr {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+    margin: 0;
+    height: 0;
+}

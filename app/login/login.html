@@ -1,0 +1,42 @@
+<ion-pane>
+    <ion-header-bar class="bar-dark">
+      <h1 class="title">Login</h1>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <button ui-sref="register" class="button button-outline button-positive button-block">Create a New Account</button>
+
+        <hr class="separator">
+
+        <div class="card" ng-if="loginError.length > 0">
+          <div class="item item-text-wrap assertive">
+            {{ loginError }}
+          </div>
+        </div>
+
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Email</span>
+                <input type="text" ng-model="creds.email">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password</span>
+                <input type="password" ng-model="creds.password">
+            </label>
+
+            <button class="button button-block button-positive button-balanced" ng-click="login('password', creds)" ng-disabled="isLoggingIn">Log in</button>
+
+            <button class="button button-outline button-block button-small" ng-click="resetPassword(creds)">Forgot your Password?</button>
+
+            <div class="button-bar">
+                <button class="button button-block button-positive ion-social-facebook icon-left" ng-click="login('facebook')">via Facebook</button>
+                <button class="button button-block button-positive ion-social-twitter icon-left" ng-click="login('twitter')">via Twitter</button>
+            </div>
+
+            <div class="list list-inset" style="margin-top: 0">
+              <div class="item item-text-wrap">
+                <p class="positive">Note: We do not post updates to either service</p>
+              </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-pane>

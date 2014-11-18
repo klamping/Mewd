@@ -1,0 +1,151 @@
+<ion-header-bar class="bar-positive">
+    <div class="buttons">
+        <button class="button button-assertive" ng-click="deleteAccount()" ng-if="user.email">Delete Account</button>
+    </div>
+    <h1 class="title">Settings</h1>
+</ion-header-bar>
+<ion-content has-tabs="true" class="padding">
+
+    <div class="card" ng-if="errMsg.length > 0">
+        <div class="item item-text-wrap assertive">
+            {{ errMsg }}
+        </div>
+    </div>
+
+    <button class="button button-light button-block" ng-show="user.email" ng-click="openPopover($event)">Change Password</button>
+
+    <script id="changePassword.html" type="text/ng-template">
+        <ion-popover-view>
+            <ion-header-bar>
+                <h1 class="title">Change Password</h1>
+            </ion-header-bar>
+            <ion-content>
+                <form name="passwordChange">
+                    <div class="list">
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">Old Password</span>
+                            <input type="password" ng-model="oldPw" placeholder="Type Old Password" required="true">
+                        </label>
+                        <label class="item item-input item-stacked-label">
+                            <span class="input-label">New Password</span>
+                            <input type="password" ng-model="newPw" placeholder="Type New Password" required="true">
+                        </label>
+                    </div>
+
+                    <button class="button button-positive button-full button-outline" ng-click="changePassword(oldPw, newPw)" ng-disabled="passwordChange.$invalid">Submit Password Change</button>
+                </form>
+            </ion-content>
+        </ion-popover-view>
+    </script>
+
+    <button class="button button-light button-block" ng-click="logout()">Logout</button>
+
+    <button class="button button-light button-block" ui-sref="privacy">Review Privacy Policy</button>
+
+    <div class="list">
+        <div class="item item-divider">
+            Reminders
+        </div>
+        <ion-item ng-repeat="reminder in reminders | orderBy:toString" ng-if="reminders.length > 0">
+            {{ reminder | date:'shortTime' }}
+            <span class="item-note">
+                <button class="button button-assertive button-small" ng-click="deleteReminder(reminder)">Delete</button>
+                <!-- {{ reminder.repeat | date:'short' }} -->
+            </span>
+        </ion-item>
+
+        <div ng-if="reminders.length === 0" class="item assertive">
+            No Reminders Currently Set
+        </div>
+    </div>
+
+    <div class="list">
+        <div class="item item-divider">
+            Create a New Reminder
+        </div>
+
+        <label class="item item-input item-select">
+            <div class="input-label">
+                Interval Type
+            </div>
+            <select ng-model="reminder.type">
+                <option value="standard">Standard</option>
+                <option value="custom">Custom</option>
+                <!-- <option value="random">Random</option> -->
+            </select>
+        </label>
+    </div>
+
+    <div class="list list-inset" ng-switch on="reminder.type">
+        <div ng-switch-when="standard">
+            <div class="item item-divider">
+                Reminder Time
+            </div>
+
+            <div class="item item-button-right">
+                {{ reminder.time | date:'shortTime' }}
+                <button class="button button-positive" ng-click="selectTime()"><i class="icon ion-ios7-time-outline"></i></button>
+            </div>
+
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Repeat Interval
+                </div>
+                <select ng-model="reminder.repeat" ng-options="f.value as f.text for f in standardFrequencies">
+                </select>
+            </label>
+        </div>
+
+        <div ng-switch-when="custom">
+            <div class="item item-divider">
+                Repeat Interval
+            </div>
+            <div class="item item-input">
+                <span class="input-label">Repeat every</span>
+
+                <div class="row row-center">
+                    <div class="col">
+                        <input type="number" min="1" step="1" ng-model="repeat.interval" placeholder="amount">
+                    </div>
+
+                    <div class="col">
+                        <select ng-model="repeat.type" ng-options="frequency.text for frequency in customFrequencies"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="item item-divider">
+            Set Quiet Hours
+        </div>
+
+        <div class="item">
+            <button class="button button-positive" ng-click="selectQuietHours('start')">Start Time <i class="icon ion-ios7-time-outline"></i></button>
+
+            <button class="button button-positive" ng-click="selectQuietHours('end')">End Time <i class="icon ion-ios7-time-outline"></i></button>
+        </div>
+ -->
+        <ion-checkbox ng-model="reminder.silent">Mute Notification Sounds</ion-checkbox>
+    </div>
+
+    <button ng-click="addReminder()" class="button button-block button-balanced">Add New Reminder</button>
+</ion-content>
+
+<!-- <ion-side-menus>
+    <ion-side-menu side="left">
+        <ion-side-menu-content ng-controller="RemindersCtrl">
+            HERE
+            <ion-list
+            show-delete="showDelete">
+                <ion-item ng-repeat="reminder in reminders | orderBy:'time':true">
+                    <ion-delete-button class="ion-minus-circled" ng-click="deleteReminder(reminder)"></ion-delete-button>
+                    {{ reminder }}
+                    <span class="item-note">
+                        {{ reminder.time | date:'short' }}
+                        {{ reminder.repeat | date:'short' }}
+                    </span>
+                </ion-item>
+            </ion-list>
+        </ion-side-menu-content>
+    </ion-side-menu>
+</ion-side-menus> -->
