@@ -1,7 +1,7 @@
 angular.module('moodTracker')
 .controller('RecordCtrl', function($scope, $firebase, moods, moodRecord, $ionicPopup) {
     var saveMood = function (mood) {
-        moodRecord.$asArray().$add({
+        moodRecord.$add({
             mood: mood.name,
             note: mood.note,
             positivity: mood.positive,
@@ -25,7 +25,7 @@ angular.module('moodTracker')
         });
     };
 
-    $scope.moods = moods.$asArray();
+    $scope.moods = moods;
 
     $scope.moodFilter = {};
 

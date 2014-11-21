@@ -1,6 +1,6 @@
 angular.module('moodTracker')
 .controller('MoodLogCtrl', function($scope, $firebase, moodRecord, $ionicPopup, $filter) {
-    $scope.moods = moodRecord.$asArray();
+    $scope.moods = moodRecord;
 
     $scope.showDelete = false;
 
@@ -14,5 +14,5 @@ angular.module('moodTracker')
             subTitle: $filter('date')(mood.time, 'medium'),
             template: mood.note
         });
-    }
+    };
 });

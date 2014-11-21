@@ -1,7 +1,7 @@
 angular.module('moodTracker')
 .controller('MoodPulseCtrl', function ($scope, moods, moodRecord, $ionicPopup) {
-    var storedMoods = moods.$asArray();
-    var records = moodRecord.$asArray();
+    var storedMoods = moods;
+    var records = moodRecord;
 
     $scope.distributionColors = [
         Chart.defaults.global.colours[2],
@@ -34,15 +34,15 @@ angular.module('moodTracker')
         date.setMonth(0);
 
         return date;
-    };
+    }
 
     function getStartOfMonth (date) {
-        date = new Date(date)
+        date = new Date(date);
 
         date.setDate(0);
 
         return date;
-    };
+    }
 
     function getStartOfWeek (date) {
         date = new Date(date);
@@ -52,7 +52,7 @@ angular.module('moodTracker')
         date.setDate(diff);
 
         return date;
-    };
+    }
 
     var today = new Date();
     var startOfToday = today.setHours(0, 0, 0, 0);
@@ -95,7 +95,7 @@ angular.module('moodTracker')
             }).then(function (daysAgo) {
                 if (typeof daysAgo !== 'undefined') {
                     var start = new Date();
-                    start.setDate(start.getDate() - daysAgo)
+                    start.setDate(start.getDate() - daysAgo);
 
                     timeframe.startDate = start;
 
@@ -116,7 +116,7 @@ angular.module('moodTracker')
             return startDate < record.time && record.time < endDate;
         });
 
-        if ($scope.timeframeRecords.length == 0) {
+        if ($scope.timeframeRecords.length === 0) {
             return false;
         }
 
@@ -175,8 +175,7 @@ angular.module('moodTracker')
 
             return label;
         });
-        var label = getLabel(record.time, currentMonth, currentYear);
-    }
+    };
 
     records.$loaded().then(function () {
         // default to 'This Week'

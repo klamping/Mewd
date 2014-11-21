@@ -87,10 +87,10 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
 .factory('moodRecord', function($firebase, $rootScope, firebaseRoot) {
     var ref = new Firebase(firebaseRoot + '/moodRecord/' + $rootScope.user.uid);
 
-    return $firebase(ref);
+    return $firebase(ref).$asArray();
 })
 .factory('moods', function($firebase, firebaseRoot, $rootScope) {
     var ref = new Firebase(firebaseRoot + '/moods');
 
-    return $firebase(ref);
+    return $firebase(ref).$asArray();
 });
