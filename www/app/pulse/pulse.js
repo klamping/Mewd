@@ -1,6 +1,5 @@
 angular.module('moodTracker')
 .controller('MoodPulseCtrl', function ($scope, moods, moodRecord, $ionicPopup) {
-    var storedMoods = moods;
     var records = moodRecord;
 
     $scope.distributionColors = [
@@ -177,23 +176,8 @@ angular.module('moodTracker')
         });
     };
 
-    records.$loaded().then(function () {
-        // default to 'This Week'
-        $scope.timeframe = $scope.timeframes[1];
-        $scope.setTimeframe($scope.timeframe);
+    // default to 'This Week'
+    $scope.timeframe = $scope.timeframes[1];
 
-        storedMoods.$loaded().then(function () {
-            // if saved w/o a positivity value, update the mood
-            // TODO this can be removed after all data has been updated
-            _.each(records, function (record) {
-                // find the associate mood
-                var mood = _.find(storedMoods, { 'name': record.mood });
-                if (_.isObject(mood) && !('positivity' in record)) {
-                    record.positivity = mood.positive;;
-
-                    records.$save(record);
-                }
-            });
-        });
-    });
+    $scope.setTimeframe($scope.timeframe);
 });

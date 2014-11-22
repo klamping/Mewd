@@ -27,6 +27,11 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
       })
       .state('tabs.views', {
         url: '',
+        resolve: {
+            records: function (moodRecord) {
+                return moodRecord.$loaded();
+            }
+        },
         views: {
             'record@tabs': {
                 templateUrl: 'app/record/record.html',
@@ -62,34 +67,40 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
     });
 
     // Get a reference to the Firebase
-    var firebaseRef = new Firebase(firebaseRoot);
+    // var firebaseRef = new Firebase(firebaseRoot);
 
-    // Create a Firebase Simple Login object
-    $rootScope.auth = $firebaseSimpleLogin(firebaseRef);
+    // // Create a Firebase Simple Login object
+    // $rootScope.auth = $firebaseSimpleLogin(firebaseRef);
 
-    // Upon successful login, set the user object
-    $rootScope.$on('$firebaseSimpleLogin:login', function(event, user) {
-        $rootScope.user = user;
-    });
+    // // Upon successful login, set the user object
+    // $rootScope.$on('$firebaseSimpleLogin:login', function(event, user) {
+    //     $rootScope.user = user;
+    // });
 
-    // Upon successful logout, reset the user object
-    $rootScope.$on('$firebaseSimpleLogin:logout', function() {
-        $rootScope.user = null;
-        if (window.cookies) {
-            window.cookies.clear();
-        }
+    // // Upon successful logout, reset the user object
+    // $rootScope.$on('$firebaseSimpleLogin:logout', function() {
+    //     $rootScope.user = null;
+    //     if (window.cookies) {
+    //         window.cookies.clear();
+    //     }
 
-        if ($state.current.data && $state.current.data.authenticate) {
-            $state.go('login');
-        }
-    });
+    //     if ($state.current.data && $state.current.data.authenticate) {
+    //         $state.go('login');
+    //     }
+    // });
 })
-.factory('moodRecord', function($firebase, $rootScope, firebaseRoot) {
-    var ref = new Firebase(firebaseRoot + '/moodRecord/' + $rootScope.user.uid);
+.factory('moodRecord', function($firebase, $rootScope, firebaseRoot, $localStorage, LocalRecords) {
+    if ($rootScope.user) {
+        var ref = new Firebase(firebaseRoot + '/moodRecord/' + $rootScope.user.uid);
 
-    return $firebase(ref).$asArray();
+        return $firebase(ref).$asArray();
+    } else {
+        var records = $localStorage.getObject('moodRecord');
+
+        return new LocalRecords(records);
+    }
 })
-.factory('moods', function($firebase, firebaseRoot, $rootScope) {
+.factory('moods', function($firebase, firebaseRoot) {
     var ref = new Firebase(firebaseRoot + '/moods');
 
     return $firebase(ref).$asArray();

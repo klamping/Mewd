@@ -5,7 +5,7 @@
 <ion-content has-tabs="true">
     <ion-list
     show-delete="showDelete">
-        <ion-item ng-repeat="mood in moods | orderBy:'time':true">
+        <ion-item ng-repeat="mood in records track by $index | orderBy:'time':true">
             <ion-delete-button class="ion-minus-circled" ng-click="deleteMood(mood)"></ion-delete-button>
             <div ng-click="showDetails(mood)">
                 <span class="item-note">
