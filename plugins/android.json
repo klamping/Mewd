@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"DatePickerPlugin\"><param name=\"android-package\" value=\"com.plugin.datepicker.DatePickerPlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBillingPlugin\"><param name=\"android-package\" value=\"com.smartmobilesoftware.inappbilling.InAppBillingPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -55,6 +59,10 @@
                         {
                             "xml": "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"com.android.vending.BILLING\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -78,6 +86,9 @@
             "PACKAGE_NAME": "com.ionicframework.Mewd113031"
         },
         "com.plugin.datepicker": {
+            "PACKAGE_NAME": "com.ionicframework.Mewd113031"
+        },
+        "cc.fovea.cordova.purchase": {
             "PACKAGE_NAME": "com.ionicframework.Mewd113031"
         }
     },

@@ -39,4 +39,4 @@ angular.module('moodTracker')
             return JSON.parse($window.localStorage[key] || '{}');
         }
     };
-})
+});

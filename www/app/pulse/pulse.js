@@ -1,7 +1,5 @@
 angular.module('moodTracker')
-.controller('MoodPulseCtrl', function ($scope, moods, moodRecord, $ionicPopup) {
-    var records = moodRecord;
-
+.controller('MoodPulseCtrl', function ($scope, moods, records, $ionicPopup) {
     $scope.distributionColors = [
         Chart.defaults.global.colours[2],
         Chart.defaults.global.colours[1],
@@ -22,7 +20,6 @@ angular.module('moodTracker')
         animation: false
     };
 
-    //
     $scope.runningPositivity = [];
     $scope.runningLabels = [];
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

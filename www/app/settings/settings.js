@@ -1,10 +1,15 @@
 angular.module('moodTracker')
-.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $ionicPopover, $cordovaDatePicker, $cordovaLocalNotification) {
+.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $ionicPopover, $cordovaDatePicker,
+    $cordovaLocalNotification, store) {
 
     // Logs a user out
     $scope.logout = function() {
         $rootScope.auth.$logout();
     };
+
+    store.isSubscribed().then(function (subscribed) {
+        $scope.subscribed = subscribed;
+    });
 
     $ionicPopover.fromTemplateUrl('changePassword.html', {
         scope: $scope,
@@ -60,8 +65,6 @@ angular.module('moodTracker')
 
 
     // reminders
-    //
-
     if (window.plugin) {
         $scope.hasReminders = true;
 
@@ -161,7 +164,7 @@ angular.module('moodTracker')
 
             if ($scope.reminder.repeat) {
                 reminderOpts.repeat = $scope.reminder.repeat;
-            };
+            }
 
             if ($scope.reminder.silent) {
                 reminderOpts.sound = null;
