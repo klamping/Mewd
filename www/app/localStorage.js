@@ -15,12 +15,6 @@ angular.module('moodTracker')
             $localStorage.setObject('moodRecord', records);
         };
 
-        records.$loaded = function () {
-            var deferred = $q.defer();
-            deferred.resolve(records);
-            return deferred.promise;
-        };
-
         return records;
     };
 })

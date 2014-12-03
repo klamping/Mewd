@@ -1,19 +1,28 @@
 angular.module('moodTracker')
-.controller('LoginCtrl', function($scope, $rootScope, $state, $ionicPopup) {
-    if ($rootScope.user !== null) {
-        $state.go('tabs.views');
-    }
-
+.controller('LoginCtrl', function($scope, $rootScope, $state, $ionicPopup, auth, store, firebaseAuth) {
     $scope.creds = {};
+
+    store.isSubscribed().then(function (subscribed) {
+        $scope.subscribed = subscribed;
+    });
+
+    store.isStoreAvailable().then(function (storeAvailable) {
+        $scope.storeAvailable = storeAvailable;
+    });
 
     // Logs a user in with inputted provider
     $scope.login = function(provider, creds) {
         $scope.isLoggingIn = true;
-        $rootScope.auth.$login(provider, creds)
+
+        console.log('logging in', provider, creds);
+
+        auth.login(provider, creds)
         .then(function () {
+            console.log('going to tabs');
             $state.go('tabs.views');
         })
-        .finally(function () {
+        .catch(function () {
+            console.log('failed to login');
             $scope.isLoggingIn = false;
         });
     };
@@ -31,7 +40,7 @@ angular.module('moodTracker')
             }
 
             $scope.creds.email = res;
-            $rootScope.auth.$sendPasswordResetEmail(res)
+            auth.getAuth().$sendPasswordResetEmail(res)
                 .then(function () {
                     $ionicPopup.alert({
                         title: 'Password Reset Sent',
@@ -42,7 +51,8 @@ angular.module('moodTracker')
     };
 
     // Log any login-related errors to the console
-    $rootScope.$on('$firebaseSimpleLogin:error', function(event, error) {
+    $rootScope.$on('$firebaseSimpleLogin:error', function (event, error) {
+        console.log('error', error.message);
         $scope.loginError = error.message;
     });
 });

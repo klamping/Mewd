@@ -4,11 +4,17 @@
 <ion-content has-tabs="true" class="padding">
     <p>Pro accounts are a yearly subscription, allowing you the following features:</p>
 
-    <ion-list>
-        <ion-item><p>Online Sync and Backup</p></ion-item>
-        <ion-item><p>Web access at mewdapp.com</p></ion-item>
-        <ion-item><p>Developer support for future enhancements</p></ion-item>
+    <ion-list class="item-text-wrap">
+        <ion-item><p>Online Sync and Backup<sup>*</sup></p></ion-item>
+        <ion-item><p>Web access via mewdapp.com<sup>*</sup></p></ion-item>
+        <ion-item><p>Support the developer and encourage continual enhancements</p></ion-item>
     </ion-list>
+
+    <div class="card">
+        <div class="item item-text-wrap">
+            <p><sup>*</sup>Note: Online sync/backup and web access requires creating an non-guest account.</p>
+        </div>
+    </div>
 
     <button class="button button-balanced button-block" ng-click="subscribe()">Subscribe to Pro</button>
 </ion-content>

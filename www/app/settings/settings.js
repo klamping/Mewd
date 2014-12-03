@@ -1,14 +1,16 @@
 angular.module('moodTracker')
-.controller('SettingsCtrl', function($scope, $rootScope, $ionicPopup, $ionicPopover, $cordovaDatePicker,
-    $cordovaLocalNotification, store) {
+.controller('SettingsCtrl', function($scope, $ionicPopup, $ionicPopover, $cordovaDatePicker,
+    $cordovaLocalNotification, store, auth, firebaseAuth) {
+    var firebaseAuth;
 
-    // Logs a user out
-    $scope.logout = function() {
-        $rootScope.auth.$logout();
-    };
+    $scope.user = auth.getUser();
 
     store.isSubscribed().then(function (subscribed) {
         $scope.subscribed = subscribed;
+    });
+
+    store.isStoreAvailable().then(function (storeAvailable) {
+        $scope.storeAvailable = storeAvailable;
     });
 
     $ionicPopover.fromTemplateUrl('changePassword.html', {
@@ -17,12 +19,16 @@ angular.module('moodTracker')
         $scope.popover = popover;
     });
 
+    $scope.logout = function() {
+        auth.logout();
+    };
+
     $scope.openPopover = function ($event) {
         $scope.popover.show($event);
     };
 
     $scope.changePassword = function (oldPw, newPw) {
-        $rootScope.auth.$changePassword($rootScope.user.email, oldPw, newPw)
+        firebaseAuth.$changePassword($scope.user.email, oldPw, newPw)
         .then(function () {
             $scope.popover.hide();
             $ionicPopup.alert({
@@ -50,7 +56,7 @@ angular.module('moodTracker')
             if (typeof res === 'undefined') {
                 return false;
             }
-            $rootScope.auth.$removeUser($rootScope.user.email, res)
+            firebaseAuth.$removeUser($scope.user.email, res)
             .then(function () {
                 $scope.logout();
                 $ionicPopup.alert({
@@ -63,8 +69,7 @@ angular.module('moodTracker')
         });
     };
 
-
-    // reminders
+    // reminders (move to external factory or something)
     if (window.plugin) {
         $scope.hasReminders = true;
 
@@ -187,16 +192,15 @@ angular.module('moodTracker')
             });
 
             $scope.fetchReminders();
-
         };
 
-        window.plugin.notification.local.ontrigger = function (id, state, json) {
-            $scope.fetchReminders();
-        };
+        // window.plugin.notification.local.ontrigger = function (id, state, json) {
+        //     $scope.fetchReminders();
+        // };
 
-        window.plugin.notification.local.onclick = function (id, state, json) {
-            // create a new reminder based on rules
-            // console.log('clicked', id);
-        };
+        // window.plugin.notification.local.onclick = function (id, state, json) {
+        //     // create a new reminder based on rules
+        //     // console.log('clicked', id);
+        // };
     }
 });

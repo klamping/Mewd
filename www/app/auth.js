@@ -1,59 +1,73 @@
 /*globals Firebase:false*/
 angular.module('moodTracker')
-.factory('auth', function ($q, $rootScope, store, firebaseRoot, $firebaseSimpleLogin, $state) {
+.factory('auth', function ($q, $rootScope, store, firebaseAuth, $state, $window) {
     var user;
 
-    // Upon successful logout, reset the user object
-    $rootScope.$on('$firebaseSimpleLogin:logout', function() {
-        user = null;
+    var logoutUser = function () {
+        var user = $window.sessionStorage.getItem('user');
 
-        if (window.cookies) {
-            window.cookies.clear();
+        if (user && JSON.parse(user) !== 'guest') {
+            console.log('loggin out of firebase');
+            firebaseAuth.$logout();
         }
 
-        if ($state.current.data && $state.current.data.authenticate) {
+        $window.sessionStorage.removeItem('user');
+
+        if (_.isObject($state.current.data) && $state.current.data.authenticate) {
             $state.go('login');
         }
+    };
+
+    // $rootScope.$on('$firebaseSimpleLogin:logout', function () {
+    //     logoutUser();
+    // });
+
+    $rootScope.$on('$firebaseSimpleLogin:login', function(event, firebaseUser) {
+        $window.sessionStorage.setItem('user', JSON.stringify(firebaseUser));
+        $state.go('tabs.views');
     });
 
-    var loginWithFirebase = function () {
+    var loginWithFirebase = function (provider, creds) {
         var deferred = $q.defer();
 
-        //Get a reference to the Firebase
-        var firebaseRef = new Firebase(firebaseRoot);
-
-        // Create a Firebase Simple Login object
-        $rootScope.auth = $firebaseSimpleLogin(firebaseRef);
-
         // Upon successful login, set the user object
-        $rootScope.$on('$firebaseSimpleLogin:login', function(event, firebaseUser) {
-            deferred.resolve(firebaseUser);
-        });
+        if (provider) {
+            firebaseAuth.$login(provider, creds)
+            .then(function (firebaseUser) {
+                deferred.resolve(firebaseUser);
+            }, function () {
+                deferred.reject();
+            });
+        }
 
         return deferred.promise;
     };
 
     var loginAsGuest = function () {
-        var deferred = $q.defer();
-        deferred.resolve('guest');
-        return deferred.promise;
+        return $q.when('guest');
     };
 
     return {
-        login: function () {
+        login: function (provider, creds) {
             var deferred = $q.defer();
 
             store.isSubscribed().then(function (subscribed) {
                 var login;
 
-                if (subscribed) {
-                    login = loginWithFirebase();
-                } else {
+                if (provider == 'guest') {
                     login = loginAsGuest();
+                // } else {
+                } else if (subscribed) {
+                    login = loginWithFirebase(provider, creds);
+                } else {
+                    deferred.reject();
                 }
 
-                login.then(function (user) {
+                login.then(function (loginUser) {
+                    $window.sessionStorage.setItem('user', JSON.stringify(loginUser));
                     deferred.resolve(user);
+                }, function () {
+                    deferred.reject();
                 });
 
                 return login;
@@ -61,19 +75,27 @@ angular.module('moodTracker')
 
             return deferred.promise;
         },
+        isLoggedIn: function () {
+            console.log('this.getUser', this.getUser);
+            return $window.sessionStorage.getItem('user') !== null;
+        },
         getUser: function () {
-            var deferred = $q.defer();
-
-            if (!user) {
-                this.login().then(function (loginUser) {
-                    user = loginUser;
-                    deferred.resolve(loginUser);
-                });
-            } else {
-                deferred.resolve(user);
+            var user = $window.sessionStorage.getItem('user');
+            if (user) {
+                user = JSON.parse(user);
             }
-
-            return deferred.promise;
+            return user;
+        },
+        logout: function () {
+            logoutUser();
         }
     };
+})
+.factory('firebaseAuth', function ($firebaseSimpleLogin, firebaseRoot) {
+    console.log('firebaseAuth');
+    //Get a reference to the Firebase
+    var firebaseRef = new Firebase(firebaseRoot);
+
+    // Create a Firebase Simple Login object
+    return $firebaseSimpleLogin(firebaseRef);
 });

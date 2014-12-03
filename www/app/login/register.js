@@ -1,19 +1,20 @@
 angular.module('moodTracker')
-.controller('RegisterCtrl', function($scope, $rootScope, $state, $ionicPopup) {
-    if ($rootScope.user !== null) {
-        $state.go('tabs.views');
-    }
+.controller('RegisterCtrl', function($scope, $rootScope, $state, $ionicPopup, auth) {
+    auth.getAuth();
 
     $scope.register = function(creds) {
         $scope.isRegistering = true;
-        $rootScope.auth.$createUser(creds.email, creds.password)
+
+        var firebaseAuth = auth.getAuth();
+
+        firebaseAuth.$createUser(creds.email, creds.password)
             .then(function () {
                 var alertPopup = $ionicPopup.alert({
                     title: 'Account Created',
                     template: 'Your account has been created. You will now be logged in.'
                 });
                 alertPopup.then(function () {
-                    $rootScope.auth.$login('password', creds)
+                    auth.login('password', creds)
                     .then(function () {
                         $state.go('tabs.views');
                     });

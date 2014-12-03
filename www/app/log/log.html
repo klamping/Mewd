@@ -14,5 +14,8 @@
                 <p>{{ mood.note }}</p>
             </div>
         </ion-item>
+        <ion-item ng-if="records.length == 0" class="assertive">
+            No moods logged
+        </ion-item>
     </ion-list>
 </ion-content>

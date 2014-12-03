@@ -3,6 +3,7 @@ angular.module('moodTracker')
 .factory('store', function ($ionicPlatform, $q) {
     var isPro = false;
     var deferred = $q.defer();
+    var storeDeferred = $q.defer();
 
     var initializeStore = function () {
         // Let's set a pretty high verbosity level, so that we see a lot of stuff
@@ -10,7 +11,7 @@ angular.module('moodTracker')
         store.verbosity = store.INFO;
 
         store.register({
-            id:    'proyearly',
+            id:    'android.test.purchased',
             alias: 'proyearly',
             type:  store.PAID_SUBSCRIPTION
         });
@@ -37,12 +38,19 @@ angular.module('moodTracker')
     $ionicPlatform.ready(function() {
         if (_.has(window, 'store')) {
             initializeStore();
+            storeDeferred.resolve(true);
+        // } else {
+        //     deferred.resolve(true);
         } else {
-            deferred.resolve(true);
+            storeDeferred.resolve(false);
+            deferred.resolve(false);
         }
     });
 
     return {
+        isStoreAvailable: function () {
+            return storeDeferred.promise;
+        },
         isSubscribed: function () {
             return deferred.promise;
         },

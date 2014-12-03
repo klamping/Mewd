@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.Mewd113031" version="0.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova6.apache.org/ns/1.0">
+<widget id="com.ionicframework.Mewd113031" version="0.0.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova6.apache.org/ns/1.0">
   <name>Mewd</name>
   <description>
-      A minimilistic app for tracking moods
-    </description>
+    A minimilistic mood tracker
+  </description>
   <author email="klamping@gmail.com" href="http://kevinlamping.com/">
-      Kevin Lamping
-    </author>
+    Kevin Lamping
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>

@@ -21,23 +21,33 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
         .state('pro', {
             url: '/pro',
             templateUrl: 'app/settings/pro/pro.html',
-            controller: 'ProCtrl'
+            controller: 'ProCtrl',
+            data: {
+                authenticate: true
+            }
         })
         .state('tabs', {
             abstract: true,
             url: '/',
             templateUrl: 'app/app.html',
             data: {
-            authenticate: true
-        }
+                authenticate: true
+            }
         })
         .state('tabs.views', {
             url: '',
             resolve: {
-                records: function (moodRecord) {
-                    return moodRecord.then(function (records) {
-                        return records.$loaded();
-                    });
+                user: function ($q, auth) {
+                    var userInfo = auth.getUser();
+
+                    if (userInfo) {
+                        return $q.when(userInfo);
+                    } else {
+                        return $q.reject({ authenticated: false });
+                    }
+                },
+                records: function (user, moodRecord) {
+                    return new moodRecord(user);
                 }
             },
             views: {
@@ -62,7 +72,7 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
 
     $urlRouterProvider.otherwise('/');
 })
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $state) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -73,23 +83,35 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
             StatusBar.styleDefault();
         }
     });
-})
-.factory('moodRecord', function($firebase, firebaseRoot, $localStorage, LocalRecords, auth, $q) {
-    var deferred = $q.defer();
 
-    auth.getUser().then(function (user) {
-        if (_.isObject(user)) {
-            var ref = new Firebase(firebaseRoot + '/moodRecord/' + user.uid);
-            deferred.resolve($firebase(ref).$asArray());
-        } else {
-            var records = $localStorage.getObject('moodRecord');
-            deferred.resolve(new LocalRecords(records));
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        console.log('$stateChangeError');
+        if (error && error.authenticated === false) {
+            $state.go('login');
         }
     });
+})
+.factory('moodRecord', function($firebase, firebaseRoot, $localStorage, LocalRecords, auth, $q, $rootScope) {
+    return function (user) {
+        if (_.isObject(user)) {
+            var ref = $firebase(new Firebase(firebaseRoot + '/moodRecord/' + user.uid));
 
-    return deferred.promise;
+            // $rootScope.$on('$firebaseSimpleLogin:logout', function () {
+            //     console.log('$off');
+            //     console.log(ref.off);
+            //     ref.off();
+            // });
+
+            return ref.$asArray().$loaded();
+        } else if (user === 'guest') {
+            var records = $localStorage.getObject('moodRecord');
+            return new LocalRecords(records);
+        }
+    }
+
 })
 .factory('moods', function($firebase, firebaseRoot) {
+    // TODO convert to using user data for pro members
     var ref = new Firebase(firebaseRoot + '/moods');
 
     return $firebase(ref).$asArray();
