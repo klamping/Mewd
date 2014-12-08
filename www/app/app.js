@@ -1,5 +1,5 @@
 /*globals Firebase:false, cordova:false, StatusBar:false*/
-angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ngCordova'])
+angular.module('moodTracker', ['ionic', 'firebase', 'chart.js', 'ngCordova'])
 .constant('firebaseRoot', 'https://moodie.firebaseio.com/')
 .config(function ($stateProvider, $urlRouterProvider) {
 
@@ -21,10 +21,7 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
         .state('pro', {
             url: '/pro',
             templateUrl: 'app/settings/pro/pro.html',
-            controller: 'ProCtrl',
-            data: {
-                authenticate: true
-            }
+            controller: 'ProCtrl'
         })
         .state('tabs', {
             abstract: true,
@@ -85,7 +82,6 @@ angular.module('moodTracker', ['ionic', 'firebase', 'ui.router', 'chart.js', 'ng
     });
 
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-        console.log('$stateChangeError');
         if (error && error.authenticated === false) {
             $state.go('login');
         }

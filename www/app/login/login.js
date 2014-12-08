@@ -14,15 +14,11 @@ angular.module('moodTracker')
     $scope.login = function(provider, creds) {
         $scope.isLoggingIn = true;
 
-        console.log('logging in', provider, creds);
-
         auth.login(provider, creds)
         .then(function () {
-            console.log('going to tabs');
             $state.go('tabs.views');
         })
         .catch(function () {
-            console.log('failed to login');
             $scope.isLoggingIn = false;
         });
     };

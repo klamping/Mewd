@@ -7,7 +7,6 @@ angular.module('moodTracker')
         var user = $window.sessionStorage.getItem('user');
 
         if (user && JSON.parse(user) !== 'guest') {
-            console.log('loggin out of firebase');
             firebaseAuth.$logout();
         }
 
@@ -50,33 +49,26 @@ angular.module('moodTracker')
     return {
         login: function (provider, creds) {
             var deferred = $q.defer();
+            var login;
 
-            store.isSubscribed().then(function (subscribed) {
-                var login;
+            if (provider == 'guest') {
+                login = loginAsGuest();
+            } else {
+                login = loginWithFirebase(provider, creds);
+            }
 
-                if (provider == 'guest') {
-                    login = loginAsGuest();
-                // } else {
-                } else if (subscribed) {
-                    login = loginWithFirebase(provider, creds);
-                } else {
-                    deferred.reject();
-                }
-
-                login.then(function (loginUser) {
-                    $window.sessionStorage.setItem('user', JSON.stringify(loginUser));
-                    deferred.resolve(user);
-                }, function () {
-                    deferred.reject();
-                });
-
-                return login;
+            login.then(function (loginUser) {
+                $window.sessionStorage.setItem('user', JSON.stringify(loginUser));
+                deferred.resolve(user);
+            }, function () {
+                deferred.reject();
             });
+
+            // return login;
 
             return deferred.promise;
         },
         isLoggedIn: function () {
-            console.log('this.getUser', this.getUser);
             return $window.sessionStorage.getItem('user') !== null;
         },
         getUser: function () {

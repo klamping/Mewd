@@ -1,7 +1,6 @@
 /*globals store:false*/
 angular.module('moodTracker')
 .factory('store', function ($ionicPlatform, $q) {
-    var isPro = false;
     var deferred = $q.defer();
     var storeDeferred = $q.defer();
 
@@ -11,19 +10,23 @@ angular.module('moodTracker')
         store.verbosity = store.INFO;
 
         store.register({
-            id:    'android.test.purchased',
             alias: 'proyearly',
+            // id:    'android.test.purchased',
+            // type:  store.NON_CONSUMABLE
+            id:    'proyearly',
             type:  store.PAID_SUBSCRIPTION
         });
 
+        store.when('proyearly').loaded(function (product) {
+            deferred.resolve(product.owned);
+        });
+
         store.when('proyearly').approved(function (order) {
-            console.log('approved', order);
             order.finish();
         });
 
-        store.when('proyearly').updated(function(p) {
-            isPro = p.owned;
-            deferred.resolve(isPro);
+        store.when('proyearly').owned(function(p) {
+            deferred.resolve(p.owned);
         });
 
         store.error(function(error) {
@@ -39,8 +42,6 @@ angular.module('moodTracker')
         if (_.has(window, 'store')) {
             initializeStore();
             storeDeferred.resolve(true);
-        // } else {
-        //     deferred.resolve(true);
         } else {
             storeDeferred.resolve(false);
             deferred.resolve(false);
@@ -55,7 +56,7 @@ angular.module('moodTracker')
             return deferred.promise;
         },
         subscribe: function () {
-            store.order('proyearly');
+            return store.order('proyearly');
         }
     };
 });
