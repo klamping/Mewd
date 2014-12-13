@@ -84,10 +84,9 @@ angular.module('moodTracker')
     };
 })
 .factory('firebaseAuth', function ($firebaseSimpleLogin, firebaseRoot) {
-    console.log('firebaseAuth');
     //Get a reference to the Firebase
-    var firebaseRef = new Firebase(firebaseRoot);
+    // var firebaseRef = new Firebase(firebaseRoot);
 
-    // Create a Firebase Simple Login object
-    return $firebaseSimpleLogin(firebaseRef);
+    // // Create a Firebase Simple Login object
+    // return $firebaseSimpleLogin(firebaseRef);
 });

@@ -4,25 +4,25 @@ angular.module('moodTracker', ['ionic', 'firebase', 'chart.js', 'ngCordova'])
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $stateProvider
-        .state('login', {
-            url: '/login',
-            templateUrl: 'app/login/login.html',
-            controller: 'LoginCtrl'
-        })
-        .state('register', {
-            url: '/register',
-            templateUrl: 'app/login/register.html',
-            controller: 'RegisterCtrl'
-        })
+        // .state('login', {
+        //     url: '/login',
+        //     templateUrl: 'app/login/login.html',
+        //     controller: 'LoginCtrl'
+        // })
+        // .state('register', {
+        //     url: '/register',
+        //     templateUrl: 'app/login/register.html',
+        //     controller: 'RegisterCtrl'
+        // })
         .state('privacy', {
             url: '/privacy',
             templateUrl: 'app/privacy.html'
         })
-        .state('pro', {
-            url: '/pro',
-            templateUrl: 'app/settings/pro/pro.html',
-            controller: 'ProCtrl'
-        })
+        // .state('pro', {
+        //     url: '/pro',
+        //     templateUrl: 'app/settings/pro/pro.html',
+        //     controller: 'ProCtrl'
+        // })
         .state('tabs', {
             abstract: true,
             url: '/',
@@ -34,17 +34,17 @@ angular.module('moodTracker', ['ionic', 'firebase', 'chart.js', 'ngCordova'])
         .state('tabs.views', {
             url: '',
             resolve: {
-                user: function ($q, auth) {
-                    var userInfo = auth.getUser();
+                // user: function ($q, auth) {
+                //     var userInfo = auth.getUser();
 
-                    if (userInfo) {
-                        return $q.when(userInfo);
-                    } else {
-                        return $q.reject({ authenticated: false });
-                    }
-                },
-                records: function (user, moodRecord) {
-                    return new moodRecord(user);
+                //     if (userInfo) {
+                //         return $q.when(userInfo);
+                //     } else {
+                //         return $q.reject({ authenticated: false });
+                //     }
+                // },
+                records: function (moodRecord) {
+                    return new moodRecord();
                 }
             },
             views: {
@@ -81,28 +81,28 @@ angular.module('moodTracker', ['ionic', 'firebase', 'chart.js', 'ngCordova'])
         }
     });
 
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-        if (error && error.authenticated === false) {
-            $state.go('login');
-        }
-    });
+    // $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+    //     if (error && error.authenticated === false) {
+    //         $state.go('login');
+    //     }
+    // });
 })
-.factory('moodRecord', function($firebase, firebaseRoot, $localStorage, LocalRecords, auth, $q, $rootScope) {
-    return function (user) {
-        if (_.isObject(user)) {
-            var ref = $firebase(new Firebase(firebaseRoot + '/moodRecord/' + user.uid));
+.factory('moodRecord', function($firebase, firebaseRoot, $localStorage, LocalRecords, $q, $rootScope) {
+    return function () {
+    //     if (_.isObject(user)) {
+    //         var ref = $firebase(new Firebase(firebaseRoot + '/moodRecord/' + user.uid));
 
-            // $rootScope.$on('$firebaseSimpleLogin:logout', function () {
-            //     console.log('$off');
-            //     console.log(ref.off);
-            //     ref.off();
-            // });
+    //         // $rootScope.$on('$firebaseSimpleLogin:logout', function () {
+    //         //     console.log('$off');
+    //         //     console.log(ref.off);
+    //         //     ref.off();
+    //         // });
 
-            return ref.$asArray().$loaded();
-        } else if (user === 'guest') {
+    //         return ref.$asArray().$loaded();
+    //     } else if (user === 'guest') {
             var records = $localStorage.getObject('moodRecord');
             return new LocalRecords(records);
-        }
+        // }
     }
 
 })
